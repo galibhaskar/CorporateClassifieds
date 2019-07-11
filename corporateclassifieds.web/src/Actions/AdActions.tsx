@@ -27,14 +27,16 @@ export const CLEAR_ACTIVE_ADS = 'CLEAR_ACTIVE_ADS';
 export const CLEAR_HISTORY_ADS = 'CLEAR_HISTORY_ADS';
 export const CLEAR_EXPIRED_ADS = 'CLEAR_EXPIRED_ADS';
 export const CLEAR_DELETED_ADS = 'CLEAR_DELETED_ADS';
+export const CLEAR_REPORTED_ADS = 'CLEAR_REPORTED_ADS';
+export const FETCH_REPORTED_ADS_BEGIN = 'FETCH_REPORTED_ADS_BEGIN';
+export const FETCH_REPORTED_ADS_SUCCESS = 'FETCH_REPORTED_ADS_SUCCESS';
+export const FETCH_REPORTED_ADS_ERROR = 'FETCH_REPORTED_ADS_ERROR';
 export const CHANGE_VIEW = 'CHANGE_VIEW';
 
 export const fetchAdsBegin = () =>
   ({
     type: FETCH_ADS_BEGIN
   })
-
-
 
 export const fetchAdsSuccess = (Ads: any) =>
   ({
@@ -154,8 +156,22 @@ export const fetchDeletedAdsError = (error: any) => ({
 })
 
 
+export const fetchReportedAdsBegin = () => ({
+  type: FETCH_REPORTED_ADS_BEGIN
+})
+
+export const fetchReportedAdsSuccess = (ReportedAds: any) => ({
+  type: FETCH_REPORTED_ADS_SUCCESS,
+  payload: { ReportedAds }
+})
+
+export const fetchReportedAdsError = (error: any) => ({
+  type: FETCH_REPORTED_ADS_ERROR,
+  payload: { error }
+})
+
 export function clear(componentName: string) {
-  if (componentName == "Ads")
+  if (componentName == "Classifieds")
     return {
       type: CLEAR_ADS
     }
@@ -167,9 +183,13 @@ export function clear(componentName: string) {
     return {
       type: CLEAR_HISTORY_ADS
     }
-  else if (componentName == "EXPIRED")
+  else if (componentName == "Expired")
     return {
       type: CLEAR_EXPIRED_ADS
+    }
+  else if (componentName == "Reported")
+    return {
+      type: CLEAR_REPORTED_ADS
     }
   else
     return {
@@ -190,6 +210,9 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
     else if (StatusCode == "Expired") {
       dispatch(fetchExpiredAdsBegin());
     }
+    else if (StatusCode == "Reported") {
+      dispatch(fetchReportedAdsBegin());
+    }
     else {
       dispatch(fetchDeletedAdsBegin());
     }
@@ -208,6 +231,9 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
       else if (StatusCode == "Expired") {
         dispatch(fetchExpiredAdsSuccess(json));
       }
+      else if (StatusCode == "Reported") {
+        dispatch(fetchReportedAdsSuccess(json));
+      }
       else {
         dispatch(fetchDeletedAdsSuccess(json));
       }
@@ -221,6 +247,9 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
       }
       else if (StatusCode == "Expired") {
         dispatch(fetchExpiredAdsError(error));
+      }
+      else if (StatusCode == "Reported") {
+        dispatch(fetchReportedAdsError(error));
       }
       else {
         dispatch(fetchDeletedAdsError(error));

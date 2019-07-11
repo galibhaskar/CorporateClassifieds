@@ -3,49 +3,63 @@
         padding:0!important
         .ExpiredItem
             padding: 15px
+            display: flex
             .ExpiredImage
                 height: 60px
                 width: 100px
                 vertical-align: top
             .ExpiredDescription
-                display: inline-block
-                width: 75%
+                display: flex
+                .Description
+                    flex-basis: 50vh
+                    flex-shrink: 1
+                    margin: auto 10px
                 .ExpiredName
-                    border:none!important
+                    border: none !important
                     display: inline-block
-                    padding-top: 0!important
-                .ExpiredTime
-                        display: inline-block
-                        float: right
-                .ExpiredAmount
-                        padding-left: 20px
+                    padding: 0 !important
+                    white-space: nowrap
+                    text-overflow: ellipsis
+                    overflow: hidden
+                    max-width: 15rem
+                
+                .Timestamp
+                    margin: 10px auto
     .Right
         .card-title
             padding: 15px
             border: 1px solid rgba(0, 0, 0, 0.125)
-        .Profile
-            margin: 10px 0 0 10px
-            float: left
-            border-radius: 50%
-            width: 40px
-            height: 40px
-        .UserName
-            display: inline-block
-            margin: 15px 10px
-        .MoreOptions:after,.MoreOptions
-            display: inline-block
-            content: '\2807'
-            float: right
-            font-size: 30px
-        .card-footer
-                min-height: 100px
-                bottom: 0px
-                width: 100%
-                .form-control
-                    min-height: 100px
-        .ExpiredAmount
-            display: inline-block
-        .ExpiredDescription1
-            display: inline-block
-            padding: 10px 20px !important
-            width: 95%
+        .ChatHeader
+            display: flex
+            flex-basis: 1vh
+            flex-grow: 1
+            .Profile
+                float: left
+                border-radius: 50%
+                flex-basis: 15px
+                height: 60px
+                width: 60px
+            .AdDetails
+                flex-basis: 1vh
+                flex-grow: 1
+                margin: 0 10px
+                .UserName
+                    font-size: 20px
+                    margin: 5px
+                .Expired
+                    margin: 5px
+            .MoreOptions:after,.MoreOptions
+                content: '\2807'
+                font-size: 30px
+                margin: auto
+        .ChatBody
+            margin: 20px
+            .StatusText    
+                font-size: larger
+                color: black
+                padding: 5px 10px
+            .Reason
+                font-size: medium
+                padding: 5px 10px
+                
+        

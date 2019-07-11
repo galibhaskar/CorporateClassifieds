@@ -12,11 +12,14 @@
         padding-inline-start: 0px
         .nav-item 
             display: inline-block
+    .InboxDetails
+        display: flex
     .InboxLeft
-        display: inline-block
-        width: 15%
+        flex-basis: auto
+        flex-grow: 0
+        flex-shrink: 0
         .card
-            margin: 20px
+            margin: 0 20px
             min-height: 75vh
             .card-header
                 padding: 0.25rem 1.25rem
@@ -27,17 +30,20 @@
                 border: none
                 color:black!important
     .InboxRight
-        display: inline-block
-        width: 84.5%
+        flex-basis: auto
+        flex-grow: 1
+        margin-right: 15px
         .Left
-            width: 30%
             display: inline-block
+            flex: 0 0 450px
         .Right
-            width: 70%
-            display: inline-block
+            flex-grow: 1
+            display: block
+            flex-basis: auto
         .card
             min-height: 75vh
             flex-direction: row
+            
             .card-header
                 padding: 0.25rem 1.25rem
             .list-group-item.active 

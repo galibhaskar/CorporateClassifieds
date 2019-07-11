@@ -4,7 +4,7 @@ import { Icon } from 'react-icons-kit';
 import { connect } from 'react-redux';
 import { postAd } from '../../Actions/AdActions';
 import { AttributesFetch, AttributeFetchBegin } from "../../Actions/AttributesActions";
-import { CategoriesFetch } from '../../Actions/CategoryActions';
+import { CategoriesFetch, CategoryFetchBegin } from '../../Actions/CategoryActions';
 import { ic_arrow_back } from 'react-icons-kit/md/ic_arrow_back';
 import Card from '../../../node_modules/react-bootstrap/Card';
 import { TextField, Checkbox, initializeIcons, DefaultButton, Label, PrimaryButton } from 'office-ui-fabric-react';
@@ -14,12 +14,14 @@ import './PostAdd.sass';
 import './Personinfo.sass';
 import './Imageslide.sass';
 import { Link } from 'react-router-dom';
+import { fetchCategoryByID } from '../../Actions/CategoryActions';
 
 initializeIcons();
 const imageMaxSize = 10000000 // bytes
 const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
 const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => { return item.trim() })
 var sortedImgFiles = new Array();
+
 interface IUser {
     ID: number
 }
@@ -52,9 +54,10 @@ class PostAdd extends React.Component<any, any>
             Type: "Select", CategoryDetails: { id: 1 }, Price: 0, Name: "", Description: "", CreatedByUser: { id: 3 }, ModifiedByUser: { id: 3 }, Status: { id: 1 }, Expiry: 0, imgToBeUploaded: [], Images: []
         };
     }
-    componentDidMount() {
+    componentWillMount() {
+        debugger;
         this.props.dispatch(CategoriesFetch());
-        this.props.dispatch(AttributeFetchBegin());
+        this.props.dispatch(CategoryFetchBegin());
     }
     submit() {
         let Ad: IAds = { Type: "", CategoryDetails: { ID: 1 }, Price: 0, Name: "", Description: "", CreatedByUser: { ID: 1 }, ModifiedByUser: { ID: 1 }, Status: { ID: 1 }, Expiry: 0, Images: [], ExtraAttributes: "" };
@@ -103,7 +106,7 @@ class PostAdd extends React.Component<any, any>
         // debugger;
         if (e.target.selectedIndex != 0) {
             var categoryID = e.target.options[e.target.selectedIndex].id;
-            this.props.dispatch(AttributesFetch(categoryID));
+            this.props.dispatch(fetchCategoryByID(categoryID));
             var ExtraAttributesList: any = [];
             {
                 this.props.Attributes.map((item: any) => {
@@ -289,7 +292,7 @@ class PostAdd extends React.Component<any, any>
                                         <TextField label="Description" value={this.state.Description} placeholder="Provide the Ad Description" className='PostAdDesc' type="textarea" multiline rows={5} onChange={this.change.bind(this)} name="Description" />
                                     </div>
 
-                                    {this.props.Attributes.map((item: any) =>
+                                    {this.props.Attributes != null && this.props.Attributes.map((item: any) =>
                                         <div className="ms-Grid-col ms-sm12">
                                             <TextField label={item.name} className='PostAdTitle' key={item.ID} type={item.type.toLowerCase().trim()} name={item.name} onChange={this.change.bind(this)} />
                                         </div>
@@ -462,8 +465,9 @@ class PostAdd extends React.Component<any, any>
 }
 
 function mapStateToProps(state: any) {
+    debugger;
     return {
-        Attributes: state.AttributesReducer.Attributes,
+        Attributes: state.CategoriesReducer.Attributes,
         Categories: state.CategoriesReducer.Categories
     };
 }

@@ -40,15 +40,6 @@ class CreateAd extends React.Component<any, any> {
         console.log(JSON.stringify(Ad));
         this.props.dispatch(postAd(JSON.stringify(Ad)));
         this.setState({ Type: "", CategoryDetails: { id: 1 }, Price: 0, Name: "", Description: "", CreatedByUser: { id: 1 }, ModifiedByUser: { id: 1 }, Status: { id: 1 }, Expiry: 0 });
-        debugger;
-        // const url = "https://localhost:44378/api/Ad";
-        // fetch(url, {
-        //     method: 'post',
-        //     headers: new Headers({ 'content-type': 'application/json' }),
-        //     body: JSON.stringify(Ad)
-        // }).then(function (response) {
-        //     console.log("success");
-        // });
 
 
 

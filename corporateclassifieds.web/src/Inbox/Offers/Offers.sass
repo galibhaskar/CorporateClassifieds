@@ -3,22 +3,26 @@
         padding:0!important
         .OfferItem
             padding: 15px
+            display: flex
             .OfferImage
                 height: 60px
                 width: 100px
                 vertical-align: top
             .OfferDescription
-                display: inline-block
-                width: 75%
+                display: flex
+                .Description
+                    flex-basis: 50vh
+                    flex-shrink: 1
+                    margin: auto 10px
                 .OfferName
-                    border:none!important
+                    border: none !important
                     display: inline-block
-                    padding-top: 0!important
-                .OfferTime
-                        display: inline-block
-                        float: right
-                .OfferAmount
-                        padding-left: 20px
+                    padding: 0 !important
+                    white-space: nowrap
+                    text-overflow: ellipsis
+                    overflow: hidden
+                    max-width: 15rem
+                
     .Right
         .card-title
             padding: 15px

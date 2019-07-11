@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import './Classifieds.sass';
 import SaleRent from "./SaleRent/SaleRent";
 import Required from "./Required/Required";
-import { fetchAds, changeDisplayAd } from '../Actions/AdActions';
+import { fetchAds, changeDisplayAd, clear } from '../Actions/AdActions';
 import { CategoriesFetch } from '../Actions/CategoryActions';
 import ViewAd from './SaleRent/ViewAd/ViewAd';
 
@@ -16,13 +16,16 @@ initializeIcons();
 class Classifieds extends Component<any, any>{
     componentDidMount() {
         console.log("component mounted");
-        this.props.dispatch(fetchAds(0));
+        this.props.dispatch(fetchAds(this.props.Ads.length));
         this.props.dispatch(CategoriesFetch());
     }
     componentWillMount() {
         this.props.dispatch(changeDisplayAd(0));
     }
 
+    componentWillUnmount() {
+        this.props.dispatch(clear("Classifieds"));
+    }
     render() {
         return (
             <div className="Classifieds" >
@@ -47,7 +50,7 @@ class Classifieds extends Component<any, any>{
                         <div>
                             <Route path="/Classifieds/SaleRent" component={SaleRent} />
                             <Route path="/Classifieds/Required" component={Required} />
-                            <Redirect to="/Classifieds/SaleRent"/>
+                            {/* <Redirect to="/Classifieds/SaleRent" /> */}
                         </div>
                 }
             </div>

@@ -5,7 +5,7 @@ import { initializeIcons } from '@uifabric/icons';
 import { connect } from "react-redux";
 import ActiveClassifiedsImage from '../activeclassifieds1.png';
 import "./ActiveClassifieds.sass";
-import { fetchUserAds, changeview } from '../../Actions/AdActions';
+import { fetchUserAds, changeview, clear } from '../../Actions/AdActions';
 import FiltersBar from '../../Classifieds/FilterBar/FiltersBar';
 import ListView from '../../Classifieds/SaleRent/ListView/ListView';
 import Gridview from '../../Classifieds/SaleRent/GridView/Gridview';
@@ -20,6 +20,7 @@ class ActiveClassifieds extends Component<any, any>
     }
     componentWillUnmount() {
         this.props.dispatch(changeview(1));
+        this.props.dispatch(clear("ActiveClassifieds"));
     }
     render() {
         return (

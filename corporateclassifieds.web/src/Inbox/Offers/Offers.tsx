@@ -13,7 +13,7 @@ class Offers extends Component<any, any>{
             <Card className="Offers" >
                 <Card className="Left">
                     <Card.Header>
-                        Offers
+                        Offers({this.props.Offers.length})
                     </Card.Header>
                     <Card.Body>
                         <ListGroup >
@@ -21,12 +21,16 @@ class Offers extends Component<any, any>{
                                 this.props.Offers.map((Offer: any) =>
                                     <Link to={"/Inbox/Offers/" + Offer.ad.name.trim()}>
                                         <ListGroup.Item className="OfferItem">
-                                            {Offer.ad.images[0]!=null ? <Card.Img className="OfferImage" variant="top" src={"data:image/jpeg;base64," + Offer.ad.images[0].image} /> :
+                                            {Offer.ad.images[0] != null ? <Card.Img className="OfferImage" variant="top" src={"data:image/jpeg;base64," + Offer.ad.images[0].image} /> :
                                                 <Card.Img className="OfferImage" variant="top" src="https://capitant.be/wp-content/themes/capitant/assets/images/no-image.png" />}
                                             <Card.Body className="OfferDescription">
-                                                <Card.Header className="OfferName">{Offer.ad.name}</Card.Header>
-                                                <Card.Text className="OfferTime">Timestamp</Card.Text>
-                                                <Card.Text className="OfferAmount">{Offer.offerAmount}</Card.Text>
+                                                <div className="Description">
+                                                    <Card.Header className="OfferName">{Offer.ad.name}</Card.Header>
+                                                    <Card.Text className="OfferAmount">{"Offered Amount : "+Offer.offerAmount}</Card.Text>
+                                                </div>
+                                                <div>
+                                                    <Card.Text className="OfferTime">Timestamp</Card.Text>
+                                                </div>
                                             </Card.Body>
                                         </ListGroup.Item>
                                     </Link>
@@ -35,9 +39,9 @@ class Offers extends Component<any, any>{
                         </ListGroup>
                     </Card.Body>
                 </Card>
-                {this.props.Offers.map((Offer: any,index:number)=>
+                {this.props.Offers.map((Offer: any, index: number) =>
                     <Route path={"/Inbox/Offers/" + Offer.ad.name.trim()} component={() => <Chat id={index} Offers={this.props.Offers} />} />
-                    )
+                )
                 }
             </Card>
         );

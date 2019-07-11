@@ -8,7 +8,7 @@ import Gridview from '../../Classifieds/SaleRent/GridView/Gridview';
 import ListView from '../../Classifieds/SaleRent/ListView/ListView';
 import ActiveClassifiedsImage from "../activeclassifieds1.png";
 import './History.sass';
-import { fetchUserAds, changeview } from '../../Actions/AdActions';
+import { fetchUserAds, changeview, clear } from '../../Actions/AdActions';
 
 
 initializeIcons();
@@ -17,8 +17,9 @@ class History extends Component<any, any>
     componentDidMount() {
         this.props.dispatch(fetchUserAds(2, "History", this.props.HistoryAds.length));    /////////user id need to be given in the first field  when authentication is added
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.dispatch(changeview(1));
+        this.props.dispatch(clear("History"));
     }
     render() {
         return (
@@ -38,7 +39,7 @@ class History extends Component<any, any>
                         </div>
                     </div>
                     <div className="History">
-                        <FiltersBar/>
+                        <FiltersBar />
                         {
                             this.props.ClassifiedsHistoryAvailable ?
                                 <div>
@@ -65,7 +66,7 @@ function mapStateToProps(state: any) {
         loading: state.AdReducer.loading,
         HistoryAds: state.AdReducer.HistoryAds,
         ClassifiedsHistoryAvailable: state.AdReducer.HistoryAdsAvailable,
-        ListView:state.AdReducer.ListView
+        ListView: state.AdReducer.ListView
     }
 }
 export default connect(mapStateToProps)(History);
