@@ -1,5 +1,8 @@
-export const SUBMISSION_SUCCESS='SUBMISSION_SUCCESS';
-export const SUBMISSION_ERROR='SUBMISSION_ERROR';
+export const SUBMISSION_SUCCESS = 'SUBMISSION_SUCCESS';
+export const SUBMISSION_ERROR = 'SUBMISSION_ERROR';
+export const FETCH_REPORTS_SUCCESS = 'FETCH_REPORTS_SUCCESS';
+export const FETCH_REPORTS_BEGIN = 'FETCH_REPORTS_BEGIN';
+export const FETCH_REPORTS_ERROR = 'FETCH_REPORTS_ERROR';
 
 export const ReportSubmissionError = (error: any) => ({
     type: SUBMISSION_ERROR,
@@ -10,11 +13,30 @@ export const ReportSubmissionSuccess = () => ({
     type: SUBMISSION_SUCCESS
 })
 
-export function SubmitReport() {
+export const FetchReportsBegin = () => ({
+    type: FETCH_REPORTS_BEGIN
+})
+
+export const FetchReportsSuccess = (ReportedAds: any) => ({
+    type: FETCH_REPORTS_SUCCESS,
+    payload: { ReportedAds }
+})
+
+export const FetchReportsError = (error: any) => ({
+    type: FETCH_REPORTS_ERROR,
+    payload: { error }
+})
+
+export function SubmitReport(report: any) {
     return async (dispatch: any) => {
         try {
-            const response = await fetch("https://localhost:44378/api/Ads");
-            console.log(response);
+            debugger;
+            const url = "https://localhost:44378/api/Report";
+            const response = await fetch(url, {
+                method: 'post',
+                headers: new Headers({ 'content-type': 'application/json' }),
+                body: JSON.stringify(report)
+            });
             const res = await handleErrors(response);
             dispatch(ReportSubmissionSuccess());
         }
@@ -22,6 +44,23 @@ export function SubmitReport() {
             return dispatch(ReportSubmissionError(error));
         }
     };
+}
+
+export function FetchReports(UserID: number) {
+    return async (dispatch: any) => {
+        try {
+            debugger;
+            dispatch(FetchReportsBegin());
+            const url = "https://localhost:44378/api/Ads/GetReportedAdsByUserID/" + UserID;
+            const response = await fetch(url);
+            const res = await handleErrors(response);
+            const json = await res.json();
+            dispatch(FetchReportsSuccess(json));
+        }
+        catch (error) {
+            dispatch(FetchReportsError(error));
+        }
+    }
 }
 function handleErrors(response: any) {
     if (!response.ok) {

@@ -4,12 +4,14 @@ import ImageReducer from "./ImageReducer";
 import AttributesReducer from "./AttributesReducer";
 import CategoriesReducer from './CategoriesReducer';
 import OffersReducer from './OffersReducer';
+import ReportReducer from './ReportReducer';
 export default combineReducers<any,any>(
     {
         AdReducer,
         ImageReducer,
         AttributesReducer,
         CategoriesReducer,
-        OffersReducer
+        OffersReducer,
+        ReportReducer
     }
 );

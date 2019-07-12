@@ -50,6 +50,7 @@ namespace Technovert.Internship.Classifieds.Services
             services.AddSingleton<IAttributeServices, AttributeServices>();
             services.AddSingleton<IOfferServices, OfferServices>();
             services.AddSingleton<IChatServices, ChatServices>();
+            services.AddSingleton<IReportServices,ReportServices>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

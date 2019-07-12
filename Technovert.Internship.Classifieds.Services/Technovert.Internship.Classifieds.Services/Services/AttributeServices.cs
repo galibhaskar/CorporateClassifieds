@@ -11,7 +11,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
 {
     public class AttributeServices : IAttributeServices
     {
-        public List<Attributes> GetAttributes(int CategoryID)
+        public List<Attributes> GetAttributesByCategoryID(int CategoryID)
         {
             using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
             {
@@ -27,26 +27,46 @@ namespace Technovert.Internship.Classifieds.Services.Services
                 try
                 {
                     DynamicParameters dynamicParameters = new DynamicParameters();
+
                     dynamicParameters.Add("@ID", attribute.ID);
                     dynamicParameters.Add("@CategoryID", CategoryID);
                     dynamicParameters.Add("@Name", attribute.Name);
                     dynamicParameters.Add("@Type", attribute.Type);
                     dynamicParameters.Add("@Value", attribute.Value);
-                    dynamicParameters.Add("@Mandatory", attribute.Mandatory == "on" ? 1 : 0);
+                    dynamicParameters.Add("@Mandatory", attribute.Mandatory != "false" ? 1 : 0);
                     dynamicParameters.Add("@Description", attribute.Description);
                     dynamicParameters.Add("@CreatedBy", attribute.CreatedBy);
                     dynamicParameters.Add("@ModifiedBy", attribute.ModifiedBy);
                     dynamicParameters.Add("@Created", attribute.ID == 0 ? DateTime.Now : attribute.Created);
                     dynamicParameters.Add("@Modified", DateTime.Now);
 
+
+
                     Procedure.ExecuteProcedure<int>("UpsertAttribute", dynamicParameters);
                     return true;
 
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+        public bool DeleteAttributes(int CategoryID)
+        {
+            using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
+            {
+                try
+                {
+                    string sql = "update Attributes set IsActive=0 where CategoryID=" + CategoryID;
+                    con.Query<int>(sql);
+                    return true;
                 }
                 catch (Exception)
                 {
                     return false;
                 }
+
             }
         }
     }

@@ -217,6 +217,7 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
       dispatch(fetchDeletedAdsBegin());
     }
     try {
+      
       var length = 10
       const url = "https://localhost:44378/api/Ads/GetAdsByUserID/" + userID + "/" + StatusCode + "/" + start + "/" + (start + length);
       const response = await fetch(url);
@@ -305,6 +306,7 @@ export function fetchAds(start: number) {
     dispatch(fetchAdsBegin());
     // }
     try {
+      // debugger;
       var length = 10
       const response = await fetch("https://localhost:44378/api/Ads/" + start + "/" + (start + length));
       console.log(response);

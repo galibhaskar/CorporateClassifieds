@@ -9,9 +9,10 @@ namespace Technovert.Internship.Classifieds.Services
     {
         public int ID { get; set; }
         public int AdID { get; set; }
-        public string Report { get; set; }
-        public string ReportedBy { get; set; }
-        public string ModifiedBy { get; set; }
+        public string ReportDescription { get; set; }
+        public string ReportCategory { get; set; }
+        public User ReportedBy { get; set; }
+        public User ModifiedBy { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
     }

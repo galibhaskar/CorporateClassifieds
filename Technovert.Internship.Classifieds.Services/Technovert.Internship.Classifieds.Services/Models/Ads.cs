@@ -29,5 +29,6 @@ namespace Technovert.Internship.Classifieds.Services
 
 
         public List<Offers> Offers { get; set; }
+        public List<Reports> ReportedAds { get; set; }
     }
 }

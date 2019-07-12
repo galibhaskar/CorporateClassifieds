@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Categories from './Categories/Categories';
 import ReportedAds from "./ReportedAds/ReportedAds";
 import "./Admin.sass";
+import Users from './Users/Users';
 
 
 initializeIcons();
@@ -30,12 +31,18 @@ class MyClassifieds extends Component<any, any>
                                 Categories
                                 </Link>
                         </li>
+                        <li className="nav-item">
+                            <Link to="/Admin/Users" className="nav-link" >
+                                Users
+                            </Link>
+                        </li>
 
                     </ul>
                 </nav>
                 <div>
                     <Route path="/Admin/ReportedAds" component={ReportedAds} />
                     <Route path="/Admin/Categories" component={Categories} />
+                    <Route path="/Admin/Users" component={Users} />
                     <Redirect to="/Admin/ReportedAds" />
                 </div>
             </div>

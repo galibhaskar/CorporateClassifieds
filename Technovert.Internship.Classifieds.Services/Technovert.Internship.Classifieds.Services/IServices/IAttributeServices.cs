@@ -7,8 +7,10 @@ namespace Technovert.Internship.Classifieds.Services.Services
 {
     public interface IAttributeServices
     {
-        List<Attributes> GetAttributes(int CategoryID);
+        List<Attributes> GetAttributesByCategoryID(int CategoryID);
 
         bool UpsertAttributes(Attributes attribute,int CategoryID);
+
+        bool DeleteAttributes(int CategoryID);
     }
 }

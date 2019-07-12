@@ -29,35 +29,36 @@ class UpsertCategory extends Component<any, any>
         let upsertCategory = this.state.UpsertCategory;
         let attributes: any = [];
         nextprops.Attributes.map((Attribute: any) => {
-            attributes = [...attributes, { Attribute, display: true, mandatory: false }];
+            attributes = [...attributes, { Attribute, display: true }];
         });
         upsertCategory.Attributes = attributes;
         upsertCategory.name = nextprops.Category.name;
         upsertCategory.description = nextprops.Category.description;
-        upsertCategory.ID = nextprops.Category.ID ?
-            nextprops.Category.ID : this.state.UpsertCategory.ID;
+        debugger;
+        upsertCategory.ID = nextprops.CategoryID ?
+            nextprops.CategoryID : this.state.UpsertCategory.ID;
         // console.log(attributes);
         this.state.UpsertCategory.Attributes == [] ? this.setState({ UpsertCategory: upsertCategory }) : this.setState({ Attributes: [] });
 
     }
     save() {
-        alert("save" + this.state.UpsertCategory.name + this.state.UpsertCategory.description + this.state.UpsertCategory.Attributes);
-        console.log(this.state.UpsertCategory.Attributes);
+        // alert("save" + this.state.UpsertCategory.name + this.state.UpsertCategory.description + this.state.UpsertCategory.Attributes);
+        // console.log(this.state.UpsertCategory.Attributes);
         let UpdatedCategory = this.state.UpsertCategory;
         let attributes: any = [];
         this.state.UpsertCategory.Attributes.map((a: any) => {
             if (a.display)
                 attributes = [...attributes, a.Attribute];
         });
-        debugger;
-        alert(attributes);
+        // debugger;
+        // alert(attributes);
         UpdatedCategory.Attributes = attributes;
         this.props.dispatch(UpsertCategoryByID(UpdatedCategory));
         this.props.UpsertCategoryStatus(false);
     }
     addAttribute() {
         let attributes: any = this.state.UpsertCategory.Attributes;
-        attributes = [...attributes, { Attribute: { name: "", type: "Text", mandatory: false, value: "" }, display: true }];
+        attributes = [...attributes, { Attribute: { name: "", type: "Text", mandatory: false, value: "", CreatedBy: 3, ModifiedBy: 3 }, display: true }];
         this.setState({
             UpsertCategory: { ...this.state.UpsertCategory, Attributes: attributes }
         });
@@ -75,8 +76,14 @@ class UpsertCategory extends Component<any, any>
         this.setState({ UpsertCategory: upsertCategory });
     }
 
+    handleCheckboxChange(index: number, e: any) {
+        let UpsertCategory = this.state.UpsertCategory;
+        let attribute = UpsertCategory.Attributes[index].Attribute;
+        attribute[e.target.name] = e.target.checked;
+        this.setState({ UpsertCategory: UpsertCategory });
+    }
     handleAttributeChange(index: number, e: any) {
-        debugger;
+        // debugger;
         let UpsertCategory = this.state.UpsertCategory;
         let attribute = UpsertCategory.Attributes[index].Attribute;
         attribute[e.target.name] = e.target.value;
@@ -156,7 +163,7 @@ class UpsertCategory extends Component<any, any>
                                                 <TextField name="value" onChange={this.handleAttributeChange.bind(this, index)} value={this.state.UpsertCategory.Attributes[index].Attribute.value} />
                                             </td>
                                             <td>
-                                                <Checkbox name="mandatory" styles={{ root: { width: 150 } }} onChange={this.handleAttributeChange.bind(this, index)} />
+                                                <Checkbox name="mandatory" styles={{ root: { width: 150 } }} checked={this.state.UpsertCategory.Attributes[index].Attribute.mandatory == "1" ? true : false} onChange={this.handleCheckboxChange.bind(this, index)} />
                                             </td>
                                             <td>
 

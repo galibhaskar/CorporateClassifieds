@@ -251,5 +251,52 @@ namespace Technovert.Internship.Classifieds.Services.Services
                 }
             }
         }
+
+        public List<Ads> GetAllReportAdsByUserID(int UserID)
+        {
+            using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
+            {
+                try
+                {
+
+                    string sql1 = @"select distinct ads.ID,ads.Name,ads.Type,ads.Category,ads.Description,ads.Created,
+                                created.*,category.*from Ads ads
+                                inner join Users created on created.ID = ads.CreatedBy
+                                inner join Category category on category.ID=ads.Category 
+                                inner join Reports reports on reports.AdID=ads.ID
+                                where ads.CreatedBy=" + UserID;
+
+                    var adimages = con.Query("select  img.[Image],img.AdID from Images img group by img.AdID,img.[Image]", new[] { typeof(Images) }, objects1 => { Images image = objects1[0] as Images; return image; });
+
+                    ReportServices reportServices = new ReportServices();
+                    List<Ads> ReportedAds = (List<Ads>)con.Query<Ads>(sql1, new[] { typeof(Ads), typeof(User), typeof(Category) }, ReportedAdobject =>
+                     {
+                         Ads ad = ReportedAdobject[0] as Ads;
+
+                         ad.CreatedByUser = ReportedAdobject[1] as User;
+
+                         ad.CategoryDetails = ReportedAdobject[2] as Category;
+
+
+                         ad.ReportedAds = reportServices.GetAllReportsByAdID(ad.ID);
+
+                         var adimage = adimages.FirstOrDefault(s => s.AdID == ad.ID);
+                         ad.Images = new List<Images>();
+                         ad.Images.Add(adimage);
+
+
+                         return ad;
+
+                     }, splitOn: "ID");
+
+                    return ReportedAds;
+
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

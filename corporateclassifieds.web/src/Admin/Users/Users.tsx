@@ -2,25 +2,19 @@ import React, { Component } from 'react';
 import 'office-ui-fabric-react/dist/css/fabric.css';
 import { initializeIcons } from '@uifabric/icons';
 import { connect } from "react-redux";
-import './ReportedAds.sass';
-import ReportedLists from './ReportedLists';
-import { FetchReports } from '../../Actions/ReportActions';
+
 initializeIcons();
-class ReportedAds extends Component<any, any>
+class Users extends Component<any, any>
 {
-    componentWillMount(){
-        this.props.dispatch(FetchReports(2));
-    }
     render() {
         return (
-            <div className="ReportedAds">
+            <div className="Users">
                 <main className="content-wrapper">
                     <div className="header">
-                        <h1>ReportedAds</h1>
-                        <p>Here you can manage categories.</p>
+                        <h1>Users</h1>
+                        <p>Here you can manage users.</p>
                     </div>
                 </main>
-                <ReportedLists />
             </div>
 
         );
@@ -31,7 +25,7 @@ function mapStateToProps(state: any) {
 
     }
 }
-export default connect(mapStateToProps)(ReportedAds);
+export default connect(mapStateToProps)(Users);
 
 
 

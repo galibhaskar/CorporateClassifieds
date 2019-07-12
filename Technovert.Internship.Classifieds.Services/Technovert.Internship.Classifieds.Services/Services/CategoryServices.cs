@@ -12,8 +12,6 @@ namespace Technovert.Internship.Classifieds.Services.Services
     public class CategoryServices : ICategoryServices
     {
 
-
-
         public List<Category> GetAllCategories()
         {
             using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
@@ -31,8 +29,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
                 try
                 {
                     string sql = "select * from Category category where category.ID=" + id + "and IsActive=1";
-                    string sql2 = "select * from Attributes attributes where attributes.CategoryID=" + id;
-                    List<Attributes> Attributes = (List<Attributes>)con.Query<Attributes>(sql2, new[] { typeof(Attributes) }, attributesObject => { Attributes attributes = attributesObject[0] as Attributes; return attributes; });
+                    AttributeServices attributeServices = new AttributeServices();
+                    List<Attributes> Attributes = attributeServices.GetAttributesByCategoryID(id);
                     Category CategoryDetails = (Category)con.Query<Category>(sql, new[] { typeof(Category) }, categoryObjects =>
                          {
                              Category categoryDetails = categoryObjects[0] as Category;
@@ -71,7 +69,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
 
         public bool UpsertCategory(Category category)
         {
-            using (IDbConnection con = new SqlConnection(@"Server=;Initial Catalog=classifieds;Integrated Security=True"))
+            using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
             {
                 try
                 {
@@ -79,8 +77,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
                     dynamicParameters.Add("@ID", category.ID);
                     dynamicParameters.Add("@Name", category.Name);
                     dynamicParameters.Add("@Icon", category.Icon);
-                    dynamicParameters.Add("@Created", category.ID == 0 ? DateTime.Now : category.Created);
-                    dynamicParameters.Add("@Modified", DateTime.Now);
+                    //dynamicParameters.Add("@Created", category.ID == 0 ? DateTime.Now : category.Created);
+                    //dynamicParameters.Add("@Modified", DateTime.Now);
                     dynamicParameters.Add("@CreatedBy", category.CreatedBy);
                     dynamicParameters.Add("@ModifiedBy", category.ModifiedBy);
                     dynamicParameters.Add("@Description", category.Description);
@@ -89,13 +87,14 @@ namespace Technovert.Internship.Classifieds.Services.Services
                     Procedure.ExecuteProcedure<int>("UpsertCategory", dynamicParameters);
                     int newCategoryID = dynamicParameters.Get<int>("@RowCount");
                     int CategoryID;
-                    if (category.ID != null)
+                    if (category.ID != 0)
                         CategoryID = category.ID;
                     else
                         CategoryID = newCategoryID;
                     var s = category.Attributes.Count;
                     var i = 0;
                     AttributeServices attributeServices = new AttributeServices();
+                    attributeServices.DeleteAttributes(CategoryID);
                     while ((s > 0 && CategoryID != 0))
                     {
                         if (attributeServices.UpsertAttributes(category.Attributes[i], CategoryID))
@@ -109,7 +108,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
                     }
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
                 }

@@ -50,6 +50,11 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
         //    return ImagesServices.GetImage(id);
         //}
 
+        [HttpGet("GetReportedAdsByUserID/{UserID}")]
+        public List<Ads> GetReportedAdsByUserID(int UserID)
+        {
+            return AdService.GetAllReportAdsByUserID(UserID);
+        }
 
         [HttpPost]
         public ActionResult UpsertAd([FromBody]Ads ad)
