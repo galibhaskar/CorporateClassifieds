@@ -5,9 +5,21 @@ import { connect } from "react-redux";
 import './ReportedAds.sass';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import NothingHere from '../Images/NothingHere.png';
+import { DeleteAd, fetchAdByID, changeDisplayAd } from '../../Actions/AdActions';
+import { FetchReports } from '../../Actions/ReportActions';
+
 initializeIcons();
 class ReportedLists extends Component<any, any>
 {
+    RemoveAd(AdID: number) {
+        alert(AdID);
+        this.props.dispatch(DeleteAd(AdID, 3)); ///////Mention the login user id in place of 3
+    }
+
+    DisplayAd = (AdID: number) => {
+    //     this.props.dispatch(changeDisplayAd())
+    //     this.props.dispatch(fetchAdByID(AdID));
+    }
     render() {
         return (
             <div>
@@ -15,45 +27,47 @@ class ReportedLists extends Component<any, any>
                     <div className="ReportedAds">
 
                         <div className="ms-Grid-row ReportedAdsHeader">
-                            <div className="ms-Grid-col ms-sm5">
+                            <div className="ms-Grid-col ms-sm7">
                                 ITEM
                             </div>
-                            <div className="ms-Grid-col ms-sm7">
-                                <div className="ms-Grid-col ms-sm4">
-                                    POSTED BY
+                            <div className="ms-Grid-col ms-sm2">
+                                POSTED BY
                                 </div>
-                                <div className="ms-Grid-col ms-sm4">
-                                    REPORTED BY
+                            <div className="ms-Grid-col ms-sm2">
+                                REPORTED BY
                                 </div>
-                                <div className="ms-Grid-col ms-sm4">
-                                    ACTIONS
+                            <div className="ms-Grid-col ms-sm1">
+                                ACTIONS
                                 </div>
-                            </div>
                         </div>
 
 
                         <div>
-                            <div className="ms-Grid-row ReportedAdsList">
-                                <div className="ms-Grid-col ms-sm5">
-                                    <div className="ms-Grid-col ms-sm1.8">
-                                        <img className="ListProductImage" src="https://capitant.be/wp-content/themes/capitant/assets/images/no-image.png" alt="Ad" />
-                                    </div>
-                                    <div className="ms-Grid-col ms-sm6 AdInfo">
-                                        <div className="AdName">
-                                            <Icon iconName="CellPhone" className="AdIcon" />
-                                            <span className="Name">Ad Name</span>
+                            {this.props.ReportedAds.map((ReportedAd: any, index: number) =>
+                                <div className="ms-Grid-row ReportedAdsList" onClick={this.DisplayAd.bind(this,ReportedAd.ID)}>
+                                    <div className="ms-Grid-col ms-sm7">
+                                        <div className="ms-Grid-col ms-sm1.8">
+                                            {ReportedAd.images.length ?
+                                                <img className="ListProductImage" src={`data:image/jpeg;base64,${ReportedAd.images[0].image}`} alt="Ad" /> :
+                                                <img className="ListProductImage" src="https://capitant.be/wp-content/themes/capitant/assets/images/no-image.png" alt="Ad" />
+                                            }
                                         </div>
-                                        <div className="AdDescription">
-                                            AdDescription
-                                </div>
+                                        <div className="ms-Grid-col ms-sm7 AdInfo">
+                                            <div className="AdName">
+                                                <Icon iconName="CellPhone" className="AdIcon" />
+                                                <span className="Name">{ReportedAd.name}</span>
+                                            </div>
+                                            <div className="AdDescription">
+                                                {ReportedAd.description}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="ms-Grid-col ms-sm7">
-                                    <div className="ms-Grid-col ms-sm4 PostedBy">
+
+                                    <div className="ms-Grid-col ms-sm2 PostedBy">
 
                                         <div className="PostedByName">
-                                            Surya
-                                </div>
+                                            {ReportedAd.createdByUser.name}
+                                        </div>
 
                                         <div className="PostedOn">
                                             {
@@ -61,39 +75,40 @@ class ReportedLists extends Component<any, any>
                                                     month: 'short',
                                                     day: '2-digit',
 
-                                                }).format(new Date('2019-06-08 14:52:23.123'))
+                                                }).format(new Date(ReportedAd.created))
                                             } ,
                                     {
                                                 new Intl.DateTimeFormat('en-GB', {
                                                     year: 'numeric'
 
-                                                }).format(new Date('2019-06-08 14:52:23.123'))
+                                                }).format(new Date(ReportedAd.created))
                                             }
                                         </div>
 
                                     </div>
 
-                                    <div className="ms-Grid-col ms-sm4 ReportedBy">
+                                    <div className="ms-Grid-col ms-sm2 ReportedBy">
 
                                         <div className="ReportedUser">
-                                            Gali Bhaskar
-                                </div>
+                                            {ReportedAd.reportedAds[0].reportedBy.name}
+                                        </div>
 
                                         <div className="ReportedUsersCount">
-                                            +2 more
-                            </div>
+                                            {ReportedAd.reportedAds.length > 1 ? `+${ReportedAd.reportedAds.length - 1} more` : null}
+                                        </div>
 
                                     </div>
 
-                                    <div className="ms-Grid-col ms-sm4 RemoveAd">
+                                    <div className="ms-Grid-col ms-sm1 RemoveAd">
 
-                                        <div className="btn btn-primary">
+                                        <div className="btn btn-primary" onClick={this.RemoveAd.bind(this, ReportedAd.id)}>
                                             Remove Ad
-                            </div>
+                                            </div>
 
                                     </div>
                                 </div>
-                            </div>
+
+                            )}
                         </div>
 
 

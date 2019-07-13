@@ -15,7 +15,7 @@ initializeIcons();
 class History extends Component<any, any>
 {
     componentDidMount() {
-        this.props.dispatch(fetchUserAds(2, "History", this.props.HistoryAds.length));    /////////user id need to be given in the first field  when authentication is added
+        this.props.dispatch(fetchUserAds(3, "History", this.props.HistoryAds.length));    /////////user id need to be given in the first field  when authentication is added
     }
     componentWillUnmount() {
         this.props.dispatch(changeview(1));

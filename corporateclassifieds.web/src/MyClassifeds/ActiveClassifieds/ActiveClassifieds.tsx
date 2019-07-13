@@ -16,7 +16,7 @@ class ActiveClassifieds extends Component<any, any>
 {
     componentDidMount() {
         debugger;
-        this.props.dispatch(fetchUserAds(2, "Active", this.props.ActiveAds.length));    /////////user id need to be given in the first field when authentication is added
+        this.props.dispatch(fetchUserAds(3, "Active", this.props.ActiveAds.length));    /////////user id need to be given in the first field when authentication is added
     }
     componentWillUnmount() {
         this.props.dispatch(changeview(1));

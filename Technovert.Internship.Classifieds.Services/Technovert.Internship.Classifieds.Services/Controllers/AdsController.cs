@@ -50,10 +50,19 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
         //    return ImagesServices.GetImage(id);
         //}
 
-        [HttpGet("GetReportedAdsByUserID/{UserID}")]
-        public List<Ads> GetReportedAdsByUserID(int UserID)
+        [HttpGet("GetReportedAds/")]
+        public List<Ads> GetReportedAds()
         {
-            return AdService.GetAllReportAdsByUserID(UserID);
+            return AdService.GetAllReportAds();
+        }
+
+        [HttpGet("IncreaseView/{AdID}")]
+        public ActionResult IncreaseView(int AdID)
+        {
+            if (AdService.ViewCount(AdID))
+                return Ok();
+            else
+                return BadRequest();
         }
 
         [HttpPost]
@@ -62,15 +71,18 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
             if (AdService.UpsertAd(ad))
                 return Ok();
             else
-                return null;
+                return BadRequest();
 
         }
 
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("DeleteAdByID/{id}/{UserID}")]
+        public ActionResult Delete(int id,int UserID)
         {
-
+            if (AdService.AdDeletionByAdmin(id, UserID))
+                return Ok();
+            else
+                return BadRequest();
         }
     }
 }

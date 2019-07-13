@@ -1,4 +1,5 @@
 import { async } from "q";
+import { FetchReports } from "./ReportActions";
 
 export const APPLY_FILTERS = 'APPLY_FILTERS';
 export const POST_AD_ERROR = 'POST_AD_ERROR';
@@ -32,6 +33,11 @@ export const FETCH_REPORTED_ADS_BEGIN = 'FETCH_REPORTED_ADS_BEGIN';
 export const FETCH_REPORTED_ADS_SUCCESS = 'FETCH_REPORTED_ADS_SUCCESS';
 export const FETCH_REPORTED_ADS_ERROR = 'FETCH_REPORTED_ADS_ERROR';
 export const CHANGE_VIEW = 'CHANGE_VIEW';
+export const DELETE_AD_BEGIN='DELETE_AD_BEGIN';
+export const DELETE_AD_SUCCESS='DELETE_AD_SUCCESS';
+export const DELETE_AD_ERROR='DELETE_AD_ERROR';
+
+
 
 export const fetchAdsBegin = () =>
   ({
@@ -155,6 +161,18 @@ export const fetchDeletedAdsError = (error: any) => ({
   payload: { error }
 })
 
+export const DeleteAdBegin=()=>({
+  type:DELETE_AD_BEGIN
+})
+
+export const DeleteAdSuccess=()=>({
+  type:DELETE_AD_SUCCESS
+})
+
+export const DeleteAdError=(error:any)=>({
+  type:DELETE_AD_ERROR,
+  payload:{error}
+})
 
 export const fetchReportedAdsBegin = () => ({
   type: FETCH_REPORTED_ADS_BEGIN
@@ -262,9 +280,11 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
 export function fetchAdByID(AdID: number) {
   return async (dispatch: any) => {
     dispatch(fetchAdByIDBegin());
-    // debugger;
+    debugger;
     try {
       const url = "https://localhost:44378/api/Ads/" + AdID;
+      const url1="https://localhost:44378/api/Ads/IncreaseView/"+AdID;
+      const response1=await fetch(url1);
       const response = await fetch(url);
       const res = await handleErrors(response);
       const json = await res.json();
@@ -296,6 +316,23 @@ export function postAd(AdDetails: any) {
   }
 }
 
+export function DeleteAd(AdID:number,userID:number){
+  return async (dispatch:any)=>{
+    try{
+      dispatch(DeleteAdBegin());
+      const url="https://localhost:44378/api/Ads/DeleteAdByID/"+AdID+"/"+userID;
+      const response=await fetch(url,{
+        method:'delete'
+      });
+      const res=await handleErrors(response);
+      dispatch(DeleteAdSuccess());
+      dispatch(FetchReports());
+    }
+    catch(error){
+      dispatch(DeleteAdError(error));
+    }
+  }
+}
 
 export function fetchAds(start: number) {
   return async (dispatch: any) => {

@@ -8,8 +8,8 @@ import { FetchReports } from '../../Actions/ReportActions';
 initializeIcons();
 class ReportedAds extends Component<any, any>
 {
-    componentWillMount(){
-        this.props.dispatch(FetchReports(2));
+    componentDidMount(){
+        this.props.dispatch(FetchReports());
     }
     render() {
         return (

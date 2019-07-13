@@ -15,8 +15,8 @@ import InfinityGIF from './Layout/Infinity.gif';
 class App extends React.Component<any, any> {
 
   render() {
-    const { error, loading } = this.props;
-    if (error) {
+    // const { error, loading } = this.props;
+    if (this.props.error) {
       return <ServerError />
     }
 
@@ -25,7 +25,7 @@ class App extends React.Component<any, any> {
         <TopBar />
 
         <div className="App" >
-          {loading == true && <div className="MainPageSpinner">
+          {this.props.loading == true && <div className="MainPageSpinner">
             {/* <h1>Team Infinity...</h1> */}
             {/* <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="loader" /> */}
             <img src={InfinityGIF} alt="loader" />

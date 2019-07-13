@@ -46,12 +46,12 @@ export function SubmitReport(report: any) {
     };
 }
 
-export function FetchReports(UserID: number) {
+export function FetchReports() {
     return async (dispatch: any) => {
         try {
             debugger;
             dispatch(FetchReportsBegin());
-            const url = "https://localhost:44378/api/Ads/GetReportedAdsByUserID/" + UserID;
+            const url = "https://localhost:44378/api/Ads/GetReportedAds/";
             const response = await fetch(url);
             const res = await handleErrors(response);
             const json = await res.json();

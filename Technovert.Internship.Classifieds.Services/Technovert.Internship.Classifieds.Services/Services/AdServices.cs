@@ -145,6 +145,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
 
                 var adimages = con.Query<Images>("select * from Images where AdID=" + id, new[] { typeof(Images) }, objects => { Images image = objects[0] as Images; return image; });
 
+                int offersCount = con.Query<int>("select count(*) from Offers where AdID=" + id).First();
 
                 var attributedetails = con.Query<Attributes>("select attributes.* from Attributes attributes inner join Category category on category.ID=attributes.CategoryID inner join Ads ads on ads.Category=category.ID where ads.ID=" + id);
 
@@ -158,11 +159,29 @@ namespace Technovert.Internship.Classifieds.Services.Services
                      add.CategoryDetails = objects[4] as Category;
                      add.AttributesDetails = attributedetails as List<Attributes>;
                      add.Images = adimages as List<Images>;
+                     add.OffersCount = offersCount;
                      return add;
                  }, splitOn: "ID");
 
 
                 return ad;
+            }
+        }
+
+        public bool ViewCount(int AdID)
+        {
+            using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
+            {
+                try
+                {
+                    string sql = "update Ads set Views=Views+1 where ID=" + AdID;
+                    con.Query(sql);
+                    return true;
+                }
+                catch(Exception)
+                {
+                    return false;
+                }
             }
         }
 
@@ -233,17 +252,24 @@ namespace Technovert.Internship.Classifieds.Services.Services
             }
         }
 
-        public bool AdDeletionByAdmin(int id, int AdminID)
+        public bool AdDeletionByAdmin(int id, int UserID)
         {
             using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
             {
                 try
                 {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@StatusID", 4);
-                    parameters.Add("@ModifiedBy", AdminID);
-                    Procedure.ExecuteProcedure<string>("PostOrUpdateAd", parameters);
-                    return true;
+                    string sql = "select [user].permission from Users [user] where [user].ID=" + UserID;
+                    int Access = con.Query<int>(sql).First();
+                    if (Access != 0)
+                    {
+                        string sql1 = "update Ads set StatusID=4,ModifiedBy=" + UserID + " where ID=" + id;
+                        con.Query(sql1);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -252,7 +278,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
             }
         }
 
-        public List<Ads> GetAllReportAdsByUserID(int UserID)
+        public List<Ads> GetAllReportAds()
         {
             using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
             {
@@ -263,8 +289,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
                                 created.*,category.*from Ads ads
                                 inner join Users created on created.ID = ads.CreatedBy
                                 inner join Category category on category.ID=ads.Category 
-                                inner join Reports reports on reports.AdID=ads.ID
-                                where ads.CreatedBy=" + UserID;
+                                inner join Reports reports on reports.AdID=ads.ID where ads.StatusID=1";
+
 
                     var adimages = con.Query("select  img.[Image],img.AdID from Images img group by img.AdID,img.[Image]", new[] { typeof(Images) }, objects1 => { Images image = objects1[0] as Images; return image; });
 

@@ -23,31 +23,6 @@ const intialstate = {
     ListView: true,
 };
 
-
-
-// function handlefilter(AdsList: any, filtersList: any): boolean {
-//     var filteredAds: any = [];
-//     AdsList.forEach((item: any) => {
-//         (filtersList.AdType).forEach((Type: any) => {
-//             if (item.Type == Type)
-//                 filteredAds.push(item)
-//         })
-
-//     });
-
-//     AdsList.forEach((item: any) => {
-//         (filtersList.AdType).forEach((Type: any) => {
-//             if (item.Type == Type)
-//                 filteredAds.push(item)
-//         })
-
-//     });
-//     return true;
-// }
-
-
-
-
 export default function AdReducer(state = intialstate, action: any) {
     switch (action.type) {
 
@@ -66,16 +41,6 @@ export default function AdReducer(state = intialstate, action: any) {
                     loading: true,
                     error: false
                 }
-
-
-        // case FETCH_START_ADS_BEGIN:
-        //     return {
-        //         ...state,
-        //         loading: true,
-        //         error: false,
-        //         Ads: []
-        //     }
-
 
         case FETCH_ADS_SUCCESS:
             console.log("Ads Fetch success")

@@ -17,6 +17,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
 
         bool AdDeletionByAdmin(int id, int AdminID);
 
-        List<Ads> GetAllReportAdsByUserID(int UserID);
+        bool ViewCount(int AdID);
+
+        List<Ads> GetAllReportAds();
     }
 }

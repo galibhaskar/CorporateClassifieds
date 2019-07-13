@@ -111,7 +111,7 @@ class ViewAd extends Component<any, any> {
                                             <p className="offersCount text-muted"><i className="fas fa-hand-holding-usd OfferIconInAdView text-muted"></i>{this.props.AdItem.offersCount}</p>
                                         </div>
                                         <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg1">
-                                            <p className="offersCount text-muted"><i className="fas fa-eye ViewIconInAdView text-muted"></i>{this.props.AdItem.commentsCount}</p>
+                                            <p className="offersCount text-muted"><i className="fas fa-eye ViewIconInAdView text-muted"></i>{this.props.AdItem.views}</p>
                                         </div>
                                     </div>
                                     <div className="ms-Grid-row">
@@ -121,12 +121,8 @@ class ViewAd extends Component<any, any> {
                                     </div>
                                     <div className="ms-Grid-row">
                                         <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg12">
-                                            <p className="productdescInAdView">{this.props.AdItem.description}
-                                                {/* {this.props.AdItem.description}{this.props.AdItem.description}
-                                            {this.props.AdItem.description}{this.props.AdItem.description}{this.props.AdItem.description}
-                                            {this.props.AdItem.description}{this.props.AdItem.description}{this.props.AdItem.description}
-                                            {this.props.AdItem.description}{this.props.AdItem.description}{this.props.AdItem.description}
-                                            {this.props.AdItem.description}{this.props.AdItem.description}{this.props.AdItem.description} */}
+                                            <p className="productdescInAdView">
+                                                {this.props.AdItem.description}
                                             </p>
                                         </div>
                                     </div>

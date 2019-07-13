@@ -6,8 +6,9 @@ const intialstate = {
     ReportError: false,
     ReportErrorInfo: "",
     ReportFetchSuccess: false,
-    ReportLoading:false,
-    ReportedAds:[]
+    ReportLoading: false,
+    ReportedAds: [],
+    loading:false
 }
 
 export default function ReportReducer(state = intialstate, action: any) {
@@ -28,27 +29,30 @@ export default function ReportReducer(state = intialstate, action: any) {
 
         case FETCH_REPORTS_BEGIN:
             debugger;
-            return{
+            return {
                 ...state,
-                ReportError:false,
-                ReportLoading:true,
-                ReportedAds:[]
+                ReportError: false,
+                ReportLoading: true,
+                ReportedAds: [],
+                loading: true,
             }
 
         case FETCH_REPORTS_SUCCESS:
             debugger;
-            return{
+            return {
                 ...state,
-                ReportFetchSuccess:true,
-                ReportLoading:false,
-                ReportError:false,
-                ReportedAds:action.payload.ReportedAds
+                ReportFetchSuccess: true,
+                ReportLoading: false,
+                ReportError: false,
+                loading: false,
+                ReportedAds: action.payload.ReportedAds
             }
         case FETCH_REPORTS_ERROR:
             return {
                 ...state,
                 ReportError: true,
-                ReportLoading:false,
+                ReportLoading: false,
+                loading: false,
                 ReportErrorInfo: action.payload.error
             }
 

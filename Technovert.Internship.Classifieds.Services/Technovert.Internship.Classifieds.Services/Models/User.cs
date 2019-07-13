@@ -17,5 +17,6 @@ namespace Technovert.Internship.Classifieds.Services
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
         public bool IsActive { get; set; }
+        public bool Permission { get; set; }
     }
 }
