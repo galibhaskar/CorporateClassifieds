@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import './Classifieds.sass';
 import SaleRent from "./SaleRent/SaleRent";
 import Required from "./Required/Required";
-import { fetchAds, changeDisplayAd, clear } from '../Actions/AdActions';
+import { fetchAds, changeDisplayAd, clear, getFilterList } from '../Actions/AdActions';
 import { CategoriesFetch } from '../Actions/CategoryActions';
 import ViewAd from './SaleRent/ViewAd/ViewAd';
 
@@ -15,8 +15,10 @@ import ViewAd from './SaleRent/ViewAd/ViewAd';
 initializeIcons();
 class Classifieds extends Component<any, any>{
     componentDidMount() {
+        const FilterList:any = { AdType: [], Category: [], Posted: [], Location: [],Search: "",start: 0};
         console.log("component mounted");
-        this.props.dispatch(fetchAds(this.props.Ads.length));
+        this.props.dispatch(getFilterList(FilterList));
+        this.props.dispatch(fetchAds(FilterList));
         this.props.dispatch(CategoriesFetch());
     }
     componentWillMount() {

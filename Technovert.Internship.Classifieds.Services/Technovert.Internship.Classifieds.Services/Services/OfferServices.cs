@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Technovert.Internship.Classifieds.Services.Generic;
 using Technovert.Internship.Classifieds.Services.IServices;
 
 namespace Technovert.Internship.Classifieds.Services.Services
@@ -49,6 +50,24 @@ namespace Technovert.Internship.Classifieds.Services.Services
 
 
                 return Offers;
+            }
+        }
+
+        public bool MakeAnOffer(Offers offer)
+        {
+            try
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@AdId", offer.AdID);
+                param.Add("@OfferAmount", offer.OfferAmount);
+                param.Add("@OfferDesc", offer.OfferDesc);
+                param.Add("@OfferBy", offer.OfferByDetails.ID);
+                Procedure.ExecuteProcedure<int>("MakeAnOffer", param);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 

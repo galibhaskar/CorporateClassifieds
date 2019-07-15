@@ -9,5 +9,6 @@ namespace Technovert.Internship.Classifieds.Services.IServices
     {
         List<Offers> GetAllOffersByUserID(int UserID);
 
+        bool MakeAnOffer(Offers offer);
     }
 }

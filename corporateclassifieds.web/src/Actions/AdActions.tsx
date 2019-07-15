@@ -36,7 +36,7 @@ export const CHANGE_VIEW = 'CHANGE_VIEW';
 export const DELETE_AD_BEGIN='DELETE_AD_BEGIN';
 export const DELETE_AD_SUCCESS='DELETE_AD_SUCCESS';
 export const DELETE_AD_ERROR='DELETE_AD_ERROR';
-
+export const GET_FILTER_LIST = 'GET_FILTER_LIST';
 
 
 export const fetchAdsBegin = () =>
@@ -334,7 +334,31 @@ export function DeleteAd(AdID:number,userID:number){
   }
 }
 
-export function fetchAds(start: number) {
+// export function fetchAds(start: number) {
+//   return async (dispatch: any) => {
+//     // if (start == 0) {
+//     //   dispatch(fetchStartAdsBegin());
+//     // }
+//     // else {
+//     dispatch(fetchAdsBegin());
+//     // }
+//     try {
+//       // debugger;
+//       var length = 10
+//       const response = await fetch("https://localhost:44378/api/Ads/" + start + "/" + (start + length));
+//       console.log(response);
+//       const res = await handleErrors(response);
+//       const json = await res.json();
+//       dispatch(fetchAdsSuccess(json));
+//     }
+//     catch (error) {
+//       return dispatch(fetchAdsError(error));
+//     }
+//   };
+// }
+
+
+export function fetchAds(FilterList: object) {
   return async (dispatch: any) => {
     // if (start == 0) {
     //   dispatch(fetchStartAdsBegin());
@@ -343,9 +367,13 @@ export function fetchAds(start: number) {
     dispatch(fetchAdsBegin());
     // }
     try {
-      // debugger;
-      var length = 10
-      const response = await fetch("https://localhost:44378/api/Ads/" + start + "/" + (start + length));
+      debugger;
+      console.log(FilterList);
+      const response = await fetch("https://localhost:44378/api/Ads/GetAllAds", {
+        method: 'post',
+        headers: new Headers({'content-type': 'application/json'}),
+        body: JSON.stringify(FilterList),
+      });
       console.log(response);
       const res = await handleErrors(response);
       const json = await res.json();
@@ -356,6 +384,18 @@ export function fetchAds(start: number) {
     }
   };
 }
+
+export const getFilterList = (FilterList: object) => ({
+  type: GET_FILTER_LIST,
+  payload: {FilterList}
+})
+export function filterList(FilterList: object){
+  return async (dispatch: any) => {
+    dispatch(getFilterList(FilterList));
+  }
+}
+
+
 
 // Handle HTTP errors since fetch won't.
 function handleErrors(response: any) {

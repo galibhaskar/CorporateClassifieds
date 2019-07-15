@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Technovert.Internship.Classifieds.Services.Generic;
 using Technovert.Internship.Classifieds.Services.IServices;
 
 namespace Technovert.Internship.Classifieds.Services.Services
@@ -31,6 +32,28 @@ namespace Technovert.Internship.Classifieds.Services.Services
                 {
                     return null;
                 }
+            }
+        }
+
+        public bool Report(Reports report)
+        {
+
+            try
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@AdID", report.AdID);
+                param.Add("@ReportDescription", report.ReportDescription);
+                param.Add("@ReportedBy", report.ReportedBy.ID);
+                //param.Add("@ModifiedBy", report.ModifiedBy);
+                //param.Add("@Created", report.Created);
+                //param.Add("@Modified", report.Modified);
+                param.Add("@ReportCategory", report.ReportCategory);
+                Procedure.ExecuteProcedure<int>("Report", param);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }

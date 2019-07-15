@@ -11,7 +11,7 @@ import { list2 } from 'react-icons-kit/icomoon/list2'
 import { ic_apps } from 'react-icons-kit/md/ic_apps';
 import "./FiltersBar.sass";
 import { connect } from 'react-redux';
-import { applyFilters, changeview } from '../../Actions/AdActions';
+import { applyFilters, changeview, clear, getFilterList, fetchAds } from '../../Actions/AdActions';
 initializeIcons();
 
 
@@ -22,14 +22,14 @@ class FiltersBar extends Component<any, any>
     super(props);
     this.state = {
       selectedItems: {
-        AdType: [], Category: [], Posted: [], Location: []
+        AdType: [], Category: [], Posted: [], Location: [], Search: ""
       }
     }
   }
 
-ChangeView=(ViewID:number)=>{
-  this.props.dispatch(changeview(ViewID));
-}
+  ChangeView = (ViewID: number) => {
+    this.props.dispatch(changeview(ViewID));
+  }
 
   private Filter = (e: any, item: any): void => {
     debugger;
@@ -37,6 +37,7 @@ ChangeView=(ViewID:number)=>{
     const Category = [...this.state.selectedItems.Category];
     const Posted = [...this.state.selectedItems.Posted];
     const Location = [...this.state.selectedItems.Location];
+    let Search = this.state.selectedItems.Search;
     if (e.target.id == "Dropdown1") {
       if (item.selected) {
         AdType.push(item.text as string);
@@ -75,7 +76,7 @@ ChangeView=(ViewID:number)=>{
       }
     }
 
-    else {
+    else if (e.target.id == "Dropdown4") {
 
       if (item.selected) {
         Location.push(item.text as string);
@@ -87,14 +88,36 @@ ChangeView=(ViewID:number)=>{
         }
       }
     }
-    const FiltersList = { AdType: AdType, Category: Category, Posted: Posted, Location: Location };
+    const FiltersList = { AdType: AdType, Category: Category, Posted: Posted, Location: Location, Search: Search, start: 0 };
     this.setState({
       selectedItems: FiltersList
     });
     console.log(FiltersList);
-    this.props.dispatch(applyFilters(FiltersList));
+    // this.props.dispatch(applyFilters(FiltersList));
+    this.props.dispatch(clear("Classifieds"));
+    this.props.dispatch(getFilterList(FiltersList));
+    this.props.dispatch(fetchAds(FiltersList));
   };
 
+
+  search = (e: any) => {
+    const AdType = [...this.state.selectedItems.AdType];
+    const Category = [...this.state.selectedItems.Category];
+    const Posted = [...this.state.selectedItems.Posted];
+    const Location = [...this.state.selectedItems.Location];
+    let Search = this.state.selectedItems.Search;
+    // if (e.key === "Enter") {
+    Search = e.target.value
+    debugger;
+    const FiltersList = { AdType: AdType, Category: Category, Posted: Posted, Location: Location, Search: Search, state: 0 };
+    this.setState({
+      selectedItems: FiltersList
+    });
+    this.props.dispatch(clear("Classifieds"));
+    this.props.dispatch(getFilterList(FiltersList));
+    this.props.dispatch(fetchAds(FiltersList));
+    // }
+  }
 
   render() {
     var Categories: any = []
@@ -108,6 +131,7 @@ ChangeView=(ViewID:number)=>{
                 <Dropdown
                   className="testing"
                   placeholder="Ad Type"
+                  id="Dropdown1"
                   onChange={this.Filter.bind(this)}
                   multiSelect
                   options={[
@@ -130,6 +154,7 @@ ChangeView=(ViewID:number)=>{
                 <Dropdown
                   placeholder="Category"
                   options={Categories}
+                  id="Dropdown2"
                   onChange={this.Filter.bind(this)}
                   multiSelect
                 />
@@ -138,6 +163,7 @@ ChangeView=(ViewID:number)=>{
                 <Dropdown
                   placeholder="Posted"
                   multiSelect
+                  id="Dropdown3"
                   onChange={this.Filter.bind(this)}
                   options={[
                     { key: 'vehicle', text: 'Vehicle' },
@@ -149,10 +175,12 @@ ChangeView=(ViewID:number)=>{
                 <Dropdown
                   placeholder="Location"
                   multiSelect
+                  id="Dropdown4"
                   onChange={this.Filter.bind(this)}
                   options={[
-                    { key: 'vehicle', text: 'Vehicle' },
-                    { key: 'property', text: 'Property' }
+                    { key: 'Hyderabad', text: 'Hyderabad' },
+                   { key: 'Mysore', text: 'Mysore' },
+                    { key: 'Kakinada', text: 'Kakinada' }
                   ]}
                 />
               </div>
@@ -160,7 +188,7 @@ ChangeView=(ViewID:number)=>{
             </div>
             <div className="ms-Grid-col ms-sm5 Search">
               <div className="ms-Grid-col ms-sm8 SearchBar">
-                <SearchBox />
+                <SearchBox onKeyUp={(e: any) => { this.search(e) }} tabIndex={0}/>
               </div>
               <div className="ms-Grid-col ms-sm2 Reset">
                 <DefaultButton className="ResetButton">
@@ -170,17 +198,17 @@ ChangeView=(ViewID:number)=>{
               </div>
 
               <div className="ms-Grid-col ms-sm1 GridViewOption">
-                
-                  <DefaultButton onClick={this.ChangeView.bind(this,0)}>
-                    <Icon size={30} icon={ic_apps} />
-                  </DefaultButton>
-               
+
+                <DefaultButton onClick={this.ChangeView.bind(this, 0)}>
+                  <Icon size={30} icon={ic_apps} />
+                </DefaultButton>
+
               </div>
 
 
               <div className="ms-Grid-col ms-sm1 ListViewOption" >
 
-                <DefaultButton onClick={this.ChangeView.bind(this,1)}>
+                <DefaultButton onClick={this.ChangeView.bind(this, 1)}>
                   <Icon size={20} icon={list2} />
                 </DefaultButton>
 

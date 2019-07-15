@@ -23,14 +23,19 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
         }
 
 
-        [HttpGet]
-        [Route("{start}/{end}")]
-        public List<Ads> GetAllAds(int start,int end)
+        //[HttpGet]
+        //[Route("{start}/{end}")]
+        //public List<Ads> GetAllAds(int start,int end)
+        //{
+        //    return AdService.GetAllAds(start,end);
+        //}
+
+  
+        [Route("/api/Ads/GetAllAds")]
+        public List<Ads> GetAllAds(Filter FilterList)
         {
-            return AdService.GetAllAds(start,end);
+            return AdService.GetAllAds(FilterList);
         }
-
-
 
         [HttpGet("{id}")]
         public List<Ads> GetAdByID(int id)

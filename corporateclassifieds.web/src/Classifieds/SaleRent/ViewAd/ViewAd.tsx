@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'react-bootstrap';
+import { Card, CardHeader, CardBody } from 'reactstrap';
 import { Icon } from 'react-icons-kit';
 import { ic_arrow_back } from 'react-icons-kit/md/ic_arrow_back';
 import { PrimaryButton } from 'office-ui-fabric-react';
@@ -10,6 +10,10 @@ import '../../../MyClassifeds/CreateAd/Personinfo.sass';
 import '../../../MyClassifeds/CreateAd/Imageslide.sass';
 import './ViewAd.sass';
 import { changeDisplayAd } from '../../../Actions/AdActions';
+import ReportAd from './ReportAd';
+import MakeAnOffer from './MakeAnOffer';
+import './ReportAd.sass';
+import './MakeAnOffer.sass';
 
 
 class ViewAd extends Component<any, any> {
@@ -22,9 +26,12 @@ class ViewAd extends Component<any, any> {
             } :
             this.state = {
                 imgsrc: props.AdItem.images[0].image,
-                StartIndex: 0
+                StartIndex: 0,
+                viewReport: false,
+                viewOffer: false
             };
         var url: string = this.props.path + props.AdItem.id;
+        debugger;
         window.location.href = url;
     }
 
@@ -43,10 +50,61 @@ class ViewAd extends Component<any, any> {
         );
         console.log(this.state);
     }
+    OnclickLeft() {
+        if (this.state.StartIndex == 0) {
+            this.setState(
+                {
+                    StartIndex: 4 * (Math.floor(this.props.AdItem.images.length / 4))
+                }
+            )
+        }
+        else {
+            this.setState(
+                {
+                    StartIndex: this.state.StartIndex - 4
+                }
+            )
+        }
+    }
+    OnclickRigth() {
+
+        if (this.state.StartIndex >= 4 * (Math.floor(this.props.AdItem.images.length / 4))) {
+            this.setState(
+                {
+                    StartIndex: 0
+                }
+            )
+        }
+        else {
+            this.setState({
+                StartIndex: this.state.StartIndex + 4
+            }
+            )
+        }
+    }
+    viewReport = () => {
+        this.setState({
+            viewReport: !this.state.viewReport
+        })
+    }
+    viewOffer = () => {
+        this.setState({
+            viewOffer: !this.state.viewOffer
+        })
+    }
+
     render() {
         debugger;
         return (
             <div className="ms-Grid-row ViewAdMainDiv">
+                {
+                    this.state.viewReport == true &&
+                    <ReportAd viewReport={this.viewReport} Adid={this.props.AdItem.id} />
+                }
+                {
+                    this.state.viewOffer == true &&
+                    <MakeAnOffer viewOffer={this.viewOffer} Adid={this.props.AdItem.id} />
+                }
                 <div className="ms-Grid-row">
                     <div className="ms-Grid-col ms-lg12 PostAdBackToList" onClick={this.Back.bind(this)}>
                         <p>
@@ -87,10 +145,10 @@ class ViewAd extends Component<any, any> {
                                         </div>)}
 
                                     </div>
-                                    <a href="#theCarousel" className="left carousel-control left" onClick={() => { this.setState({ StartIndex: this.state.StartIndex - 4 }) }}>
+                                    <a href="#theCarousel" className="left carousel-control left" onClick={() => this.OnclickLeft()}>
                                         <i className="fas fa-chevron-left ChevronIcon"></i>
                                     </a>
-                                    <a href="#theCarousel" className="right carousel-control right" onClick={() => { this.setState({ StartIndex: this.state.StartIndex + 4 }) }}>
+                                    <a href="#theCarousel" className="right carousel-control right" onClick={() => this.OnclickRigth()}>
                                         <i className="fas fa-chevron-right ChevronIcon"></i>
                                     </a>
                                 </Card>
@@ -134,84 +192,85 @@ class ViewAd extends Component<any, any> {
                     <div className="ms-Grid-col ms-sm6 ms-md8 ms-lg5">
                         <div className="ms-Grid-col ms-sm6 ms-md8 ms-lg12 PersonInfoDiv">
                             <div className="card PersoninfoMainDiv">
-                                <div>
-                                    <div className="ms-Grid-row">
-                                        <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg6">
-                                            <h5 className='publish'>Published by</h5>
+                                <Card>
+                                    <CardHeader className="cardHeader">
+                                        <h5 className='publish'>Published by</h5>
+                                        <h6 className="text-muted postdate">{this.props.AdItem.createdByUser.created}</h6>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <div className="cardBodyRow1">
+                                            <img width={32} height={32} alt="propic" className="img-circle propic" src="https://capitant.be/wp-content/themes/capitant/assets/images/no-image.png" />
+                                            <p className="proname">{this.props.AdItem.createdByUser.name}</p>
                                         </div>
-                                        <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg2"></div>
-                                        <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg4">
-                                            {!this.props.PostAdPersonInfo == true &&
-                                                <h6 className="text-muted postdate">18 April,2019</h6>
+                                        <div className="cardBodyRow2">
+                                            <div className="placeDetails">
+                                                <i className="fas fa-map-marker-alt locicon"></i>
+                                                <p className="postownlocation">{this.props.AdItem.createdByUser.location}</p>
+                                            </div>
+                                            <div className="mailDetails">
+                                                <i className="fas fa-envelope mailicon"></i>
+                                                <p className="postownmail">{this.props.AdItem.createdByUser.email}</p>
+                                            </div>
+                                        </div>
+                                        <div className="cardBodyRow3">
+                                            <div className="numberDetails">
+                                                <i className="fas fa-phone phoneicon"></i>
+                                                <p className="postownnumber">{this.props.AdItem.createdByUser.phone}</p>
+                                            </div>
+                                            <div className="expiryDetails">
+                                                <i className="far fa-clock expireicon"></i>
+                                                <p className="postexpiredate">{this.props.AdItem.expiry} days</p>
+                                            </div>
+                                        </div>
+                                        <div className="cardBodyRow4">
+                                            {
+                                                window.location.href.includes("Classifieds/SaleRent") == true &&
+                                                <div>
+                                                    < PrimaryButton className="Reportbutton" text="Report" allowDisabledFocus={true} onClick={() => { this.viewReport() }} />
+                                                    <PrimaryButton className="Offeradbutton" text="Make an Offer" allowDisabledFocus={true} onClick={() => { this.viewOffer() }} />
+                                                </div>
+                                            }
+                                            {
+                                                window.location.href.includes("MyClassifieds/ActiveClassifieds") == true &&
+                                                <div>
+                                                    < PrimaryButton className="Reportbutton" text="Edit" allowDisabledFocus={true} />
+                                                    <PrimaryButton className="Offeradbutton" text="Remove Ad" allowDisabledFocus={true} />
+                                                </div>
+                                            }
+                                            {
+                                                window.location.href.includes("MyClassifieds/History") == true && this.props.AdItem.status.id != 4 &&
+                                                <div>
+                                                    < PrimaryButton className="Reportbutton" text="Edit" allowDisabledFocus={true} />
+                                                    <PrimaryButton className="Offeradbutton" text="Re-Post" allowDisabledFocus={true} />
+                                                </div>
+                                            }
+                                            {
+                                                window.location.href.includes("MyClassifieds/History") == true && this.props.AdItem.status.id == 4 &&
+                                                <div>
+                                                    < PrimaryButton className="Reportbutton" text="Edit" allowDisabledFocus={true} />
+                                                    <PrimaryButton className="Offeradbutton" text="Send for Approval" allowDisabledFocus={true} />
+                                                </div>
                                             }
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="card-body">
-                                    <div className="ms-Grid-row">
-                                        <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg1">
-                                            {/* <img width={32} height={32} alt="propic" className="img-circle propic" src={"data:image/jpeg;base64," + this.props.AdItem.images[0].image} alt="" /> */}
-                                        </div>
-                                        <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg10 PersonInfoPronameCol">
-                                            <p className="proname">Vamsea</p>
-                                        </div>
-                                    </div>
-                                    <div className="ms-Grid-row PersonInfoContactDetails">
-                                        <div className="ms-Grid-row">
-                                            <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg2">
-                                                <i className="fas fa-map-marker-alt locicon">
-                                                </i>
-                                            </div>
-                                            <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg4">
-                                                <p className="postownlocation">KPHB, Hyderbad</p>
-                                            </div>
-                                            <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg2">
-                                                <i className="fas fa-envelope mailicon"></i>
-                                            </div>
-                                            <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg4">
-                                                <p className="postownmail">abcdef@gh.com</p>
-                                            </div>
-
-                                        </div>
-                                        <div className="ms-Grid-row">
-                                            <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg2">
-                                                <Icons icon={ic_phone_android} className='phoneicon'></Icons>
-                                            </div>
-                                            <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg4">
-                                                <p className="postownnumber">1234567890</p>
-                                            </div>
-
-
-                                            <div>
-                                                <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg2">
-                                                    <i className="far fa-clock expireicon"></i>
-                                                </div>
-                                                <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg4"   >
-                                                    <p className="postexpiredate">878258/4537</p>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div className="ms-Grid-row">
-                                        <div className="ms-Grid-col ms-sm4"></div>
-                                        <div className="ms-Grid-col ms-sm8">
-                                            <div className="ms-Grid-col ms-sm1"></div>
-                                            <div className="ms-Grid-col ms-sm4">
-                                                <PrimaryButton className="Reportbutton" text="Report" allowDisabledFocus={true} />
-
-                                            </div>
-                                            <div className="ms-Grid-col ms-sm6">
-                                                <PrimaryButton className="Offeradbutton" text="Make an Offer" allowDisabledFocus={true} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </CardBody>
+                                </Card>
                             </div>
                         </div>
                     </div>
+                    {this.props.AdItem.status.id == 4 && window.location.href.includes("MyClassifieds/History") &&
+                        <div className="ms-Grid-col ms-sm6 ms-md8 ms-lg5 RemovedByAdmin">
+                            <Card>
+                                <CardHeader>
+                                    <h5>{this.props.AdItem.status.name.trim()}</h5>
+                                </CardHeader>
+                                <CardBody>
+                                    <p>" {this.props.AdItem.status.description.trim()} "</p>
+                                </CardBody>
+                            </Card>
+                        </div>
+                    }
                 </div>
-            </div>
+            </div >
         );
     }
 }
@@ -219,7 +278,9 @@ class ViewAd extends Component<any, any> {
 function mapStateToProps(state: any) {
     debugger;
     return {
-        AdItem: state.AdReducer.Ad[0]
+        AdItem: state.AdReducer.Ad[0],
+
+
     };
 }
 

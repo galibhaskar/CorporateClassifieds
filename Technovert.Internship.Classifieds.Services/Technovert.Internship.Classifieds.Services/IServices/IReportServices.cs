@@ -8,5 +8,7 @@ namespace Technovert.Internship.Classifieds.Services.IServices
     public interface IReportServices
     {
         List<Reports> GetAllReportsByAdID(int AdID);
+
+        bool Report(Reports report);
     }
 }

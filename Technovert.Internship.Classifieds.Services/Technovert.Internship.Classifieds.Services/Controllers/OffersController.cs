@@ -34,8 +34,12 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
 
         // POST: api/Offers
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult MakeAnOffer([FromBody]Offers offer)
         {
+            if (offerServices.MakeAnOffer(offer))
+                return Ok();
+            else
+                return null;
         }
 
         // PUT: api/Offers/5

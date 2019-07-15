@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Technovert.Internship.Classifieds.Services.Models;
 
 namespace Technovert.Internship.Classifieds.Services.Services
 {
     public interface IAdServices
     {
-        List<Ads> GetAllAds(int start, int end);
+        List<Ads> GetAllAds(Filter FilterList);
 
         bool UpsertAd(Ads ad);
 

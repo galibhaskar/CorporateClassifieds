@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'office-ui-fabric-react/dist/css/fabric.css';
 import { initializeIcons } from '@uifabric/icons';
 import { connect } from "react-redux";
-import { Card, Table, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Card, Table, ListGroup, ListGroupItem, Modal, Button } from 'react-bootstrap';
 import { Checkbox } from 'office-ui-fabric-react';
 import { FetchUsers, UpsertUser } from '../../Actions/UserActions';
 import './Users.sass';
@@ -13,7 +13,7 @@ class Users extends Component<any, any>
     constructor(props: any) {
         super(props);
         this.state = {
-            UsersList: []
+            UsersList: [],ShowPopUp:false
         }
     }
     componentWillMount() {
@@ -21,24 +21,29 @@ class Users extends Component<any, any>
         this.props.dispatch(FetchUsers());
     }
 
-    handleChange(index: number,e:any) {
+    handleChange(index: number, e: any) {
         debugger;
         let users = this.state.UsersList;
         let user = users[index];
         // let a=e.target.name;
-        user[e.target.name]= !user[e.target.name];
+        user[e.target.name] = !user[e.target.name];
         this.setState({ UsersList: users });
     }
 
     SaveChanges() {
-        alert("save");
         console.log(this.state);
-        let UsersList=this.state.UsersList;
+        let UsersList = this.state.UsersList;
         this.props.dispatch(UpsertUser(UsersList));
     }
     componentWillReceiveProps(nextProps: any) {
-        this.setState({ UsersList: nextProps.Users });
+        debugger;
+        this.setState({ UsersList: nextProps.Users});
     }
+
+    handleClose(){
+        this.setState({ShowPopUp:false});
+    }
+
     render() {
         return (
             <div className="Users">
@@ -96,11 +101,17 @@ class Users extends Component<any, any>
 
                                 </tbody>
                             </Table>
-
-                            {/* {this.state.removeUser && <RemoveUser UserID={this.state.Userid} RemoveUserStatus={this.RemoveUserStatus.bind(this)} />}
-                            {this.state.UpsertUser && <UpsertUser UserID={this.state.Userid} UpsertUserStatus={this.UpsertUserStatus.bind(this)} />}
-                            {this.state.AddUser && <UpsertUser UserID={0} UpsertUserStatus={this.AddUserStatus.bind(this)} />} */}
-
+                            {this.state.ShowPopUp && <Modal className="RemoveCategory" show={true} onHide={this.handleClose.bind(this)}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Confirmation</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>Users Info Updated</Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="primary" onClick={this.handleClose.bind(this)}>
+                                        ok
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>}
                         </Card>
                     </div>
 

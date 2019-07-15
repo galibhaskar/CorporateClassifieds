@@ -5,15 +5,24 @@ import 'office-ui-fabric-react/dist/css/fabric.css';
 import FiltersBar from '../../FilterBar/FiltersBar';
 import "./ListView.sass";
 import AdList from './AdList';
-import { fetchAds } from '../../../Actions/AdActions';
+import { fetchAds, getFilterList } from '../../../Actions/AdActions';
 
 
 class ListView extends Component<any, any>{
 
+  // scrolled = (scroll: any) => {
+  //   debugger;
+  //   if (scroll.target.scrollTop + scroll.target.clientHeight + 100 >= scroll.target.scrollHeight && this.props.loading == false) {
+  //     this.props.dispatch(fetchAds(this.props.AdListItem.length));
+  //   }
+  // }
+
   scrolled = (scroll: any) => {
+    const FilterList: any = { AdType: [...this.props.FilterList.AdType], Category: [...this.props.FilterList.Category], Posted: [...this.props.FilterList.Posted], Location: [...this.props.FilterList.Location], Search: this.props.FilterList.Search, start: this.props.AdListItem.length };
     debugger;
     if (scroll.target.scrollTop + scroll.target.clientHeight + 100 >= scroll.target.scrollHeight && this.props.loading == false) {
-      this.props.dispatch(fetchAds(this.props.AdListItem.length));
+      this.props.dispatch(getFilterList(FilterList));
+      this.props.dispatch(fetchAds(FilterList));
     }
   }
 
@@ -79,7 +88,8 @@ function mapStateToProps(state: any) {
   return {
     error: state.AdReducer.error,
     loading: state.AdReducer.loading,
-    Ads: state.AdReducer.Ads
+    Ads: state.AdReducer.Ads,
+    FilterList: state.AdReducer.FilterList
   }
 }
 
