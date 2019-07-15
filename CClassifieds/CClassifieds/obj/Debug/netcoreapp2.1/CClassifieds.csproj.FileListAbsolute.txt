@@ -1,0 +1,14 @@
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.csprojAssemblyReference.cache
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.csproj.CoreCompileInputs.cache
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.RazorAssemblyInfo.cache
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.RazorAssemblyInfo.cs
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.AssemblyInfoInputs.cache
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.AssemblyInfo.cs
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\bin\Debug\netcoreapp2.1\CClassifieds.deps.json
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\bin\Debug\netcoreapp2.1\CClassifieds.runtimeconfig.json
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\bin\Debug\netcoreapp2.1\CClassifieds.runtimeconfig.dev.json
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\bin\Debug\netcoreapp2.1\CClassifieds.dll
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.RazorTargetAssemblyInfo.cache
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\bin\Debug\netcoreapp2.1\CClassifieds.pdb
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.dll
+C:\Users\suryabhaskar.g\Desktop\Corporate Classifieds\CClassifieds\CClassifieds\obj\Debug\netcoreapp2.1\CClassifieds.pdb
