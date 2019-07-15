@@ -40,7 +40,7 @@ class Offers extends Component<any, any>{
                     </Card.Body>
                 </Card>
                 {this.props.Offers.map((Offer: any, index: number) =>
-                    <Route path={"/Inbox/Offers/" + Offer.ad.id} component={() => <Chat id={index} Offers={this.props.Offers} />} />
+                    <Route path={"/Inbox/Offers/" + Offer.ad.id} component={() => <Chat id={index} Offers={this.props.Offers} OfferID={Offer.id} />} />
                 )
                 }
             </Card>

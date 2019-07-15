@@ -18,10 +18,10 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
             ChatServices = chatServices;
         }
         // GET: api/Chat
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("{OfferID}")]
+        public List<Chat> GetChatByID(int OfferID)
         {
-            return new string[] { "value1", "value2" };
+            return ChatServices.GetChatByOfferID(OfferID);
         }
 
         //// GET: api/Chat/5

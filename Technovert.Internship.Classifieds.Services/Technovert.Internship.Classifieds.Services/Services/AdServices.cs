@@ -428,8 +428,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
                     int Access = con.Query<int>(sql).First();
                     if (Access != 0)
                     {
-                        string sql1 = "update Ads set StatusID=4,ModifiedBy=" + UserID + " where ID=" + id;
-                        con.Query(sql1);
+                        //string sql1 = "update Ads set StatusID=4,ModifiedBy=" + UserID + " where ID=" + id;
+                        //con.Query(sql1);
                         return true;
                     }
                     else
@@ -474,7 +474,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
 
                          var adimage = adimages.FirstOrDefault(s => s.AdID == ad.ID);
                          ad.Images = new List<Images>();
-                         ad.Images.Add(adimage);
+                         if(adimage!=null)
+                            ad.Images.Add(adimage);
 
 
                          return ad;

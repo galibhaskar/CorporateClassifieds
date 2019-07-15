@@ -6,6 +6,7 @@ import CategoriesReducer from './CategoriesReducer';
 import OffersReducer from './OffersReducer';
 import ReportReducer from './ReportReducer';
 import UserReducer from './UserReducer';
+import ChatReducer from './ChatReducer';
 
 export default combineReducers<any, any>(
     {
@@ -15,6 +16,7 @@ export default combineReducers<any, any>(
         CategoriesReducer,
         OffersReducer,
         ReportReducer,
+        ChatReducer,
         UserReducer
     }
 );

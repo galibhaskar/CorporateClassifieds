@@ -69,26 +69,26 @@ export function postOffer(OfferDetails: any) {
 
 
 
-export function postOfferMessage(Chat: any) {
-  debugger;
-  return async (dispatch: any) => {
-    try {
-      console.log(Chat);
-      const url = "https://localhost:44378/api/Chat";
-      const response = await fetch(url, {
-        method: 'post',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        body: Chat
-      });
-      const res = await handleErrors(response);
-      dispatch(postOffersuccess());
-      //dispatch(fetchUserOffers(Chat.SenderDetails.ID));
-    }
-    catch (error) {
-      return dispatch(postOfferError());
-    }
-  }
-}
+// export function postOfferMessage(Chat: any) {
+//   debugger;
+//   return async (dispatch: any) => {
+//     try {
+//       console.log(Chat);
+//       const url = "https://localhost:44378/api/Chat";
+//       const response = await fetch(url, {
+//         method: 'post',
+//         headers: new Headers({ 'content-type': 'application/json' }),
+//         body: Chat
+//       });
+//       const res = await handleErrors(response);
+//       dispatch(postOffersuccess());
+//       //dispatch(fetchUserOffers(Chat.SenderDetails.ID));
+//     }
+//     catch (error) {
+//       return dispatch(postOfferError());
+//     }
+//   }
+// }
 
 
 // Handle HTTP errors since fetch won't.

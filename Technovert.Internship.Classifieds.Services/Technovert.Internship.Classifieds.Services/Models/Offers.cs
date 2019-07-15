@@ -14,6 +14,6 @@ namespace Technovert.Internship.Classifieds.Services
         public string OfferDesc { get; set; }
         public User OfferByDetails { get; set; }
         public Ads Ad { get; set; }
-        public List<Chat> Chat { get; set; }
+        //public List<Chat> Chat { get; set; }
     }
 }

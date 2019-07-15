@@ -37,8 +37,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
 
                     Offer.OfferByDetails = Offerobjects[2] as User;
 
-                    ChatServices chatServices = new ChatServices();
-                    Offer.Chat=chatServices.GetChatByOfferID(Offer.ID);
+                    //ChatServices chatServices = new ChatServices();
+                    //Offer.Chat=chatServices.GetChatByOfferID(Offer.ID);
 
                     var adimage = adimages.FirstOrDefault(s => s.AdID == Offer.Ad.ID);
                     Offer.Ad.Images = new List<Images>();

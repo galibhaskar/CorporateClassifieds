@@ -4,7 +4,7 @@ import MessageList from "../MessageList";
 import './Offers.sass';
 import './Chat.sass';
 import { Icon } from "office-ui-fabric-react";
-import { postOfferMessage } from "../../Actions/OffersActions";
+import { postMessage, fetchOfferChat } from '../../Actions/ChatActions'
 import { connect } from "react-redux";
 class Chat extends Component<any, any>{
     // componentDidMount(){
@@ -12,17 +12,24 @@ class Chat extends Component<any, any>{
     // }
     constructor(props: any) {
         super(props);
-        this.state = { OfferID:(this.props.Offers[this.props.id].id),Message: "",SenderDetails:{ID:3},ReceiverDetails:{ID:this.props.Offers[this.props.id].offerByDetails.id }}
+        this.state = { OfferID: (this.props.Offers[this.props.id].id), Message: "", SenderDetails: { ID: 3 }, ReceiverDetails: { ID: this.props.Offers[this.props.id].offerByDetails.id } };
+        this.props.dispatch(fetchOfferChat(props.OfferID));
     }
-    handleKeyPress = (event: any) => {
-        let chat=this.state;
-        if (event.key === "Enter"){
-            alert(JSON.stringify(chat));
-            this.props.dispatch(postOfferMessage(JSON.stringify(chat)));
+    getChat() {
+        debugger;
+        // setInterval(this.props.dispatch(fetchOfferChat(this.state.OfferID)), 100000);
+    }
+
+    SendMessage = (event: any) => {
+        let chat = this.state;
+        if (event.key === "Enter") {
+            // alert(JSON.stringify(chat));
+            this.props.dispatch(postMessage(chat));
+            // this.props.dispatch(fetchOfferChat(this.props.OfferID));
             this.setState({ Message: "" });
         }
     }
-    handleChange=(event:any)=>{
+    handleChange = (event: any) => {
         this.setState(
             {
                 Message: event.target.value
@@ -46,19 +53,21 @@ class Chat extends Component<any, any>{
 
                     </div>
                 </Card.Title>
-                <Card.Body className="ChatBody">
-                    {this.props.Offers[this.props.id].chat.map((item: any) =>
+                <Card.Body className="ChatBody" onLoad={this.getChat.bind(this)}>
+                    {this.props.ChatAvailable && this.props.Chat.map((item: any) =>
                         <MessageList message={item} />)}
                 </Card.Body>
                 <Card.Footer>
                     {/* <InputGroup size="lg"> */}
                     {/* <FormControl aria-label="Large" aria-describedby="inputGroup-sizing-sm" /> */}
                     {/* <InputGroup.Append> */}
-                    {/* <InputGroup.Text id="inputGroup-sizing-lg" onKeyPress={this.handleKeyPress.bind(this)} onClick={() => alert("send message")}><Icon iconName="send" /></InputGroup.Text> */}
-                    {/* <input type="text field" onKeyPress={this.handleKeyPress.bind(this)} /> */}
+                    {/* <InputGroup.Text id="inputGroup-sizing-lg" onKeyPress={this.SendMessage.bind(this)} onClick={() => alert("send message")}><Icon iconName="send" /></InputGroup.Text> */}
+                    {/* <input type="text field" onKeyPress={this.SendMessage.bind(this)} /> */}
                     {/* </InputGroup.Append> */}
                     {/* </InputGroup> */}
-                    <textarea className="SendBox" name="Message" onChange={this.handleChange.bind(this)} value={this.state.Message.trim()} onKeyPress={this.handleKeyPress.bind(this)} /><input type="submit" name="submit" />
+                    <textarea className="SendBox" name="Message" onChange={this.handleChange.bind(this)} value={this.state.Message} onKeyPress={this.SendMessage.bind(this)} />
+                    <Icon iconName="Send" className="SendIcon" onClick={this.SendMessage.bind(this)} />
+                    {/* <input type="submit" name="submit" /> */}
                 </Card.Footer>
             </Card>
 
@@ -69,7 +78,8 @@ class Chat extends Component<any, any>{
 
 function mapStateToProps(state: any) {
     return {
-        //ChatList:state.OffersReducer.Chat;
+        Chat: state.ChatReducer.Messages,
+        ChatAvailable: state.ChatReducer.MessagesAvailable
     }
 }
 export default connect(mapStateToProps)(Chat);
