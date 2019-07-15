@@ -10,7 +10,7 @@ export const CATEGORY_FETCH_ERROR = 'CATEGORY_FETCH_ERROR';
 export const UPSERT_CATEGORY_BEGIN='UPSERT_CATEGORY_BEGIN';
 export const UPSERT_CATEGORY_SUCCESS='UPSERT_CATEGORY_SUCCESS';
 export const UPSERT_CATEGORY_ERROR='UPSERT_CATEGORY_ERROR';
-
+export const CHANGE_CATEGORY_MODAL_STATUS='CHANGE_CATEGORY_MODAL_STATUS';
 
 
 // export const CATEGORY_DELETE_SUCCESS = 'CATEGORY_DELETE_SUCCESS';
@@ -66,10 +66,17 @@ export const UpsertCategoryError=(Error:any)=>({
   type:UPSERT_CATEGORY_ERROR,
   payload:{Error}
 })
+
+
+export const ChangeCategoryModalStatus=()=>({
+  type:CHANGE_CATEGORY_MODAL_STATUS
+})
+
+
 export function UpsertCategoryByID(Category: any) {
   return async (dispatch: any) => {
     dispatch(UpsertCategoryBegin());
-    alert(Category);
+    // alert(Category);
     try {
       const url="https://localhost:44378/api/Category/";
       const response = await fetch(url, {

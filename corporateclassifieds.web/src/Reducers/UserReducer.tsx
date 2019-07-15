@@ -1,4 +1,4 @@
-import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR, UPSERT_USER_ERROR, UPSERT_USER_SUCCESS } from "../Actions/UserActions";
+import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR, UPSERT_USER_ERROR, UPSERT_USER_SUCCESS,CHANGE_USERS_MODAL_STATUS } from "../Actions/UserActions";
 
 const intialstate = {
     Users: [],
@@ -50,6 +50,12 @@ export default function UserReducer(state = intialstate, action: any) {
                 ...state,
                 UpsertError: true,
                 UpsertErrorInfo: action.payload.error
+            }
+
+        case CHANGE_USERS_MODAL_STATUS:
+            return{
+                ...state,
+                UpsertUserSuccess:false
             }
 
         default:

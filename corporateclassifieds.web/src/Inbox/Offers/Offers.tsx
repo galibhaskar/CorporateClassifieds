@@ -19,7 +19,7 @@ class Offers extends Component<any, any>{
                         <ListGroup >
                             {
                                 this.props.Offers.map((Offer: any) =>
-                                    <Link to={"/Inbox/Offers/" + Offer.ad.name.trim()}>
+                                    <Link to={"/Inbox/Offers/" + Offer.ad.id}>
                                         <ListGroup.Item className="OfferItem">
                                             {Offer.ad.images[0] != null ? <Card.Img className="OfferImage" variant="top" src={"data:image/jpeg;base64," + Offer.ad.images[0].image} /> :
                                                 <Card.Img className="OfferImage" variant="top" src="https://capitant.be/wp-content/themes/capitant/assets/images/no-image.png" />}
@@ -40,7 +40,7 @@ class Offers extends Component<any, any>{
                     </Card.Body>
                 </Card>
                 {this.props.Offers.map((Offer: any, index: number) =>
-                    <Route path={"/Inbox/Offers/" + Offer.ad.name.trim()} component={() => <Chat id={index} Offers={this.props.Offers} />} />
+                    <Route path={"/Inbox/Offers/" + Offer.ad.id} component={() => <Chat id={index} Offers={this.props.Offers} />} />
                 )
                 }
             </Card>

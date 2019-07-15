@@ -6,6 +6,7 @@ export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
 export const UPSERT_USER_SUCCESS = 'UPSERT_USER_SUCCESS';
 export const UPSERT_USER_ERROR = 'UPSERT_USER_ERROR';
+export const CHANGE_USERS_MODAL_STATUS='CHANGE_USERS_MODAL_STATUS';
 
 export const ValidateUserBegin = () => ({
     type: VALIDATE_USER_BEGIN
@@ -40,6 +41,10 @@ export const UpsertUserSuccess = () => ({
 export const UpsertUserError = (error: any) => ({
     type: UPSERT_USER_ERROR,
     payload: { error }
+})
+
+export const ChangeUsersModalStatus=()=>({
+    type:CHANGE_USERS_MODAL_STATUS
 })
 
 export const ValidateCredentials = (Credentials: any) => {

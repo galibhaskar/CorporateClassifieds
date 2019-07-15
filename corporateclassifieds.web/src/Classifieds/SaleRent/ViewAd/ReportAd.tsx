@@ -5,10 +5,10 @@ import './ReportAd.sass';
 import { connect } from 'react-redux';
 import { SubmitReport } from '../../../Actions/ReportActions';
 interface Ireport{
-    ReportDesc: string,
+    ReportDescription: string,
     ReportedBy : IUser,
     AdId : number,
-    ReportCat: string
+    ReportCategory: string
 }
 interface IUser{
     ID: number
@@ -16,7 +16,7 @@ interface IUser{
 class ReportAd extends Component<any, any> {
     constructor(props: any) {
         super(props);
-        this.state = {  ReportDesc : "", ReportedBy: {Id: 4}, ReportCat: "" };
+        this.state = {  ReportDescription : "", ReportedBy: {Id: 4}, ReportCategory: "" };
     }
     change(e: any) {
         this.setState(
@@ -26,15 +26,15 @@ class ReportAd extends Component<any, any> {
         );
     }
     submit = () =>{
-        let report: Ireport = {ReportDesc: "", ReportedBy: {ID: 4}, AdId: 0, ReportCat: "" };
-        report.ReportDesc = this.state.Description;
+        let report: Ireport = {ReportDescription: "", ReportedBy: {ID: 4}, AdId: 0, ReportCategory: "" };
+        report.ReportDescription = this.state.ReportDescription;
         report.ReportedBy.ID = this.state.ReportedBy.Id;
         report.AdId = this.props.Adid;
-        report.ReportCat = this.state.ReportCat;
-        debugger;
-        this.props.dispatch(SubmitReport(report));    
+        report.ReportCategory = this.state.ReportCategory;
+        this.props.dispatch(SubmitReport(report)); 
+        this.props.viewReport();   
         this.setState({
-           ReportDesc : "", ReportedBy: {Id: 4}
+           ReportDescription : "", ReportedBy: {Id: 4}
         })
     }
     render() {
@@ -49,13 +49,13 @@ class ReportAd extends Component<any, any> {
                         <CardBody>
                             <div className="inputFieldsWrapper">
                                 <p className="text-muted">Report Category</p>
-                                <select className="ms-Dropdown-select" onChange = {this.change.bind(this)} name = "ReportCat">
+                                <select className="ms-Dropdown-select" onChange = {this.change.bind(this)} name = "ReportCategory">
                                     <option>Select</option>
                                     <option>Fake Product</option>
                                     <option>Irrelavent Post</option>
                                     <option>Abuse Content</option>
                                 </select>
-                                <TextField label="Description" placeholder="Describe the Report here..." className='RSeportAdDesc' type="textarea" multiline rows={3} value = {this.state.Description} name="Description" onChange = {this.change.bind(this)} />
+                                <TextField label="Description" placeholder="Describe the Report here..." className='RSeportAdDesc' type="textarea" multiline rows={3} value = {this.state.Description} name="ReportDescription" onChange = {this.change.bind(this)} />
                             </div>
                             <Button className="reportButton" onClick = {() => {this.submit()}}>Report</Button>
                             <Button className="cancelButton" onClick={() => { this.props.viewReport() }}>cancel</Button>

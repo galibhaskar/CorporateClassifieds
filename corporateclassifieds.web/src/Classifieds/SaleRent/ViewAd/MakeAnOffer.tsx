@@ -32,6 +32,7 @@ class MakeAnOffer extends Component<any, any> {
         offerDetails.AdId = this.props.Adid;
         debugger;
         this.props.dispatch(postOffer(offerDetails));    
+        this.props.viewOffer();
         this.setState({
             OfferAmount: 0, Description : "", User: {Id: 4}
         })

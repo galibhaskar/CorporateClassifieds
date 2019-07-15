@@ -4,7 +4,7 @@ import { initializeIcons } from '@uifabric/icons';
 import { connect } from "react-redux";
 import { Card, Table, ListGroup, ListGroupItem, Modal, Button } from 'react-bootstrap';
 import { Checkbox } from 'office-ui-fabric-react';
-import { FetchUsers, UpsertUser } from '../../Actions/UserActions';
+import { FetchUsers, UpsertUser, ChangeUsersModalStatus } from '../../Actions/UserActions';
 import './Users.sass';
 
 initializeIcons();
@@ -13,7 +13,7 @@ class Users extends Component<any, any>
     constructor(props: any) {
         super(props);
         this.state = {
-            UsersList: [],ShowPopUp:false
+            UsersList: []
         }
     }
     componentWillMount() {
@@ -41,7 +41,8 @@ class Users extends Component<any, any>
     }
 
     handleClose(){
-        this.setState({ShowPopUp:false});
+        this.props.dispatch(ChangeUsersModalStatus());
+        // this.setState({ShowPopUp:false});
     }
 
     render() {
@@ -101,14 +102,16 @@ class Users extends Component<any, any>
 
                                 </tbody>
                             </Table>
-                            {this.state.ShowPopUp && <Modal className="RemoveCategory" show={true} onHide={this.handleClose.bind(this)}>
+                            
+                            
+                            {this.props.Updated && <Modal className="UsersModal" show={true} onHide={this.handleClose.bind(this)}>
                                 <Modal.Header closeButton>
-                                    <Modal.Title>Confirmation</Modal.Title>
+                                    <Modal.Title>Success</Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body>Users Info Updated</Modal.Body>
+                                <Modal.Body>Users Info Updation Successful</Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="primary" onClick={this.handleClose.bind(this)}>
-                                        ok
+                                        Ok
                                     </Button>
                                 </Modal.Footer>
                             </Modal>}
@@ -125,7 +128,8 @@ class Users extends Component<any, any>
 function mapStateToProps(state: any) {
     debugger;
     return {
-        Users: state.UserReducer.Users
+        Users: state.UserReducer.Users,
+        Updated:state.UserReducer.UpsertUserSuccess
     }
 }
 export default connect(mapStateToProps)(Users);

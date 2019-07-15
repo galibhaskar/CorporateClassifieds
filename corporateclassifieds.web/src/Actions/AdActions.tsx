@@ -319,6 +319,7 @@ export function postAd(AdDetails: any) {
 export function DeleteAd(AdID:number,userID:number){
   return async (dispatch:any)=>{
     try{
+      debugger;
       dispatch(DeleteAdBegin());
       const url="https://localhost:44378/api/Ads/DeleteAdByID/"+AdID+"/"+userID;
       const response=await fetch(url,{

@@ -4,7 +4,7 @@ import 'office-ui-fabric-react/dist/css/fabric.css';
 import { initializeIcons } from '@uifabric/icons';
 import { connect } from "react-redux";
 import { Card, Table, ButtonToolbar, Overlay, Popover, Button, ListGroup, ListGroupItem, Modal } from 'react-bootstrap';
-import { CategoriesFetch, RemoveCategoryByID, fetchCategoryByID, CategoryFetchBegin, UpsertCategoryByID } from '../../Actions/CategoryActions';
+import { CategoriesFetch, RemoveCategoryByID, fetchCategoryByID, CategoryFetchBegin, UpsertCategoryByID, ChangeCategoryModalStatus } from '../../Actions/CategoryActions';
 import './UpsertCategory.sass';
 import { TextField, Dropdown, Checkbox, Label, Icon } from 'office-ui-fabric-react';
 import { isTypeParameter } from '@babel/types';
@@ -54,7 +54,6 @@ class UpsertCategory extends Component<any, any>
         // alert(attributes);
         UpdatedCategory.Attributes = attributes;
         this.props.dispatch(UpsertCategoryByID(UpdatedCategory));
-        this.props.UpsertCategoryStatus(false);
     }
     addAttribute() {
         let attributes: any = this.state.UpsertCategory.Attributes;
@@ -89,6 +88,11 @@ class UpsertCategory extends Component<any, any>
         attribute[e.target.name] = e.target.value;
         this.setState({ UpsertCategory: UpsertCategory });
 
+    }
+
+    handleClose() {
+        this.props.dispatch(ChangeCategoryModalStatus());
+        this.props.UpsertCategoryStatus(false);
     }
     render() {
         return (
@@ -184,6 +188,19 @@ class UpsertCategory extends Component<any, any>
                     </Modal.Body>
 
                 </Modal>
+
+
+                {this.props.Updated && <Modal className="UpsertCategoryModal" show={true} onHide={this.handleClose.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Success</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Category Updation Successful</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={this.handleClose.bind(this)}>
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>}
             </div >
 
         );
@@ -193,7 +210,8 @@ function mapStateToProps(state: any) {
     debugger;
     return {
         Category: state.CategoriesReducer.Category,
-        Attributes: state.CategoriesReducer.Attributes
+        Attributes: state.CategoriesReducer.Attributes,
+        Updated: state.CategoriesReducer.UpsertCategorySuccess,
     }
 }
 export default connect(mapStateToProps)(UpsertCategory);

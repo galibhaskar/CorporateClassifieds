@@ -7,18 +7,23 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import NothingHere from '../Images/NothingHere.png';
 import { DeleteAd, fetchAdByID, changeDisplayAd } from '../../Actions/AdActions';
 import { FetchReports } from '../../Actions/ReportActions';
+import { Modal, Button } from 'react-bootstrap';
 
 initializeIcons();
 class ReportedLists extends Component<any, any>
 {
     RemoveAd(AdID: number) {
-        alert(AdID);
+        // alert(AdID);
         this.props.dispatch(DeleteAd(AdID, 3)); ///////Mention the login user id in place of 3
     }
 
     DisplayAd = (AdID: number) => {
-    //     this.props.dispatch(changeDisplayAd())
-    //     this.props.dispatch(fetchAdByID(AdID));
+        alert(window.location.pathname);
+        let path="/Classifieds/SaleRent#"+AdID;
+        alert(path);
+        window.location.href=path;
+        //     this.props.dispatch(changeDisplayAd())
+        //     this.props.dispatch(fetchAdByID(AdID));
     }
     render() {
         return (
@@ -44,7 +49,7 @@ class ReportedLists extends Component<any, any>
 
                         <div>
                             {this.props.ReportedAds.map((ReportedAd: any, index: number) =>
-                                <div className="ms-Grid-row ReportedAdsList" onClick={this.DisplayAd.bind(this,ReportedAd.ID)}>
+                                <div className="ms-Grid-row ReportedAdsList" onClick={this.DisplayAd.bind(this, ReportedAd.id)}>
                                     <div className="ms-Grid-col ms-sm7">
                                         <div className="ms-Grid-col ms-sm1.8">
                                             {ReportedAd.images.length ?
@@ -121,7 +126,17 @@ class ReportedLists extends Component<any, any>
                     <img className="NothingHere" src={NothingHere} alt="NothingHere" />
                 }
 
-
+                {/* {this.props.Updated && <Modal className="UpsertCategoryModal" show={true} onHide={this.handleClose.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Success</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Category Updation Successful</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={this.handleClose.bind(this)}>
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>} */}
 
             </div>
 

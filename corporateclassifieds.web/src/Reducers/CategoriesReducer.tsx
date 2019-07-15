@@ -1,4 +1,4 @@
-import { CATEGORY_FETCH_SUCCESS, CATEGORY_FETCH_ERROR, CATEGORY_FETCH_BEGIN, CATEGORIES_FETCH_BEGIN, CATEGORIES_FETCH_ERROR, CATEGORIES_FETCH_SUCCESS, UPSERT_CATEGORY_BEGIN, UPSERT_CATEGORY_SUCCESS, UPSERT_CATEGORY_ERROR } from "../Actions/CategoryActions";
+import { CATEGORY_FETCH_SUCCESS, CATEGORY_FETCH_ERROR, CATEGORY_FETCH_BEGIN, CATEGORIES_FETCH_BEGIN, CATEGORIES_FETCH_ERROR, CATEGORIES_FETCH_SUCCESS, UPSERT_CATEGORY_BEGIN, UPSERT_CATEGORY_SUCCESS, UPSERT_CATEGORY_ERROR, CHANGE_CATEGORY_MODAL_STATUS } from "../Actions/CategoryActions";
 
 const initialstate = {
     Categories: [],
@@ -60,6 +60,7 @@ export default function CategoriesReducer(state = initialstate, action: any) {
         case UPSERT_CATEGORY_BEGIN:
             return {
                 ...state,
+                UpsertCategorySuccess: false,
                 UpsertCategoryError: false
             }
 
@@ -76,6 +77,12 @@ export default function CategoriesReducer(state = initialstate, action: any) {
                 UpsertCategorySuccess: false,
                 UpsertCategoryError: true,
                 UpsertCategoryErrrorInfo: action.payload.Error
+            }
+
+        case CHANGE_CATEGORY_MODAL_STATUS:
+            return {
+                ...state,
+                UpsertCategorySuccess: false
             }
 
         default:
