@@ -1,10 +1,13 @@
-import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR } from "../Actions/UserActions";
+import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR, UPSERT_USER_ERROR, UPSERT_USER_SUCCESS } from "../Actions/UserActions";
 
 const intialstate = {
     Users: [],
     UserFetchError: false,
     UserFetchErrorInfo: "",
-    loading: false
+    loading: false,
+    UpsertUserSuccess: false,
+    UpsertError: false,
+    UpsertErrorInfo: ""
 
 };
 
@@ -34,6 +37,21 @@ export default function UserReducer(state = intialstate, action: any) {
                 UserFetchError: true,
                 UserFetchErrorInfo: action.payload.error
             }
+
+        case UPSERT_USER_SUCCESS:
+            return {
+                ...state,
+                UpsertUserSuccess: true,
+                UpsertError: false
+            }
+
+        case UPSERT_USER_ERROR:
+            return {
+                ...state,
+                UpsertError: true,
+                UpsertErrorInfo: action.payload.error
+            }
+
         default:
             return state;
     }

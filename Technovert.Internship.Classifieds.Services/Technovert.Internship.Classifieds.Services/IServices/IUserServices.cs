@@ -6,7 +6,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
     {
        
         IEnumerable<User> GetUsers(int id = 0);
-        void AddOrUpdateUser(User user);
+        void AddOrUpdateUser(List<User> user);
         void DeleteUser(int id);
     }
 }

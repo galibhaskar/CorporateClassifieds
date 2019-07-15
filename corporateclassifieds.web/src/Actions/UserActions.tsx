@@ -4,7 +4,8 @@ export const VALIDATE_USER_ERROR = 'VALIDATE_USER_ERROR';
 export const FETCH_USERS_BEGIN = 'FETCH_USERS_BEGIN';
 export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
-
+export const UPSERT_USER_SUCCESS = 'UPSERT_USER_SUCCESS';
+export const UPSERT_USER_ERROR = 'UPSERT_USER_ERROR';
 
 export const ValidateUserBegin = () => ({
     type: VALIDATE_USER_BEGIN
@@ -29,6 +30,15 @@ export const fetchUsersSuccess = (Users: any) => ({
 
 export const fetchUsersError = (error: any) => ({
     type: FETCH_USERS_ERROR,
+    payload: { error }
+})
+
+export const UpsertUserSuccess = () => ({
+    type: UPSERT_USER_SUCCESS
+})
+
+export const UpsertUserError = (error: any) => ({
+    type: UPSERT_USER_ERROR,
     payload: { error }
 })
 
@@ -59,6 +69,25 @@ export const FetchUsers = () => {
         }
         catch (error) {
             dispatch(fetchUsersError(error));
+        }
+    }
+}
+
+
+export const UpsertUser = (UsersList: any) => {
+    return async (dispatch: any) => {
+        try {
+            const url = "https://localhost:44378/api/User";
+            const res = await fetch(url, {
+                method: 'post',
+                headers: new Headers({ 'content-type': 'application/json' }),
+                body: JSON.stringify(UsersList)
+            })
+            const response = await handleError(res);
+            dispatch(UpsertUserSuccess());
+        }
+        catch (error) {
+            dispatch(UpsertUserError(error));
         }
     }
 }

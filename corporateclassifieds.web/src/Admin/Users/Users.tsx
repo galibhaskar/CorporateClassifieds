@@ -4,15 +4,40 @@ import { initializeIcons } from '@uifabric/icons';
 import { connect } from "react-redux";
 import { Card, Table, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Checkbox } from 'office-ui-fabric-react';
-import { FetchUsers } from '../../Actions/UserActions';
+import { FetchUsers, UpsertUser } from '../../Actions/UserActions';
 import './Users.sass';
 
 initializeIcons();
 class Users extends Component<any, any>
 {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            UsersList: []
+        }
+    }
     componentWillMount() {
         debugger;
         this.props.dispatch(FetchUsers());
+    }
+
+    handleChange(index: number,e:any) {
+        debugger;
+        let users = this.state.UsersList;
+        let user = users[index];
+        // let a=e.target.name;
+        user[e.target.name]= !user[e.target.name];
+        this.setState({ UsersList: users });
+    }
+
+    SaveChanges() {
+        alert("save");
+        console.log(this.state);
+        let UsersList=this.state.UsersList;
+        this.props.dispatch(UpsertUser(UsersList));
+    }
+    componentWillReceiveProps(nextProps: any) {
+        this.setState({ UsersList: nextProps.Users });
     }
     render() {
         return (
@@ -21,6 +46,13 @@ class Users extends Component<any, any>
                     <div className="header">
                         <h1>Users</h1>
                         <p>Here you can manage users.</p>
+                        <div className="cta-button-panel" onClick={this.SaveChanges.bind(this)}>
+
+                            <div className="btn btn-primary">
+                                Save
+                                </div>
+
+                        </div>
                     </div>
 
                     <div className="Users">
@@ -38,12 +70,12 @@ class Users extends Component<any, any>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.props.Users.map((User: any) =>
+                                    {this.props.Users.map((User: any, index: number) =>
 
                                         <tr>
                                             <td className="Profile">
-                                                {User.Picture != null ?
-                                                    <img className="ListProductImage" src={`data:image/jpeg;base64,${User.Picture}`} alt="Ad" /> :
+                                                {User.picture != null ?
+                                                    <img className="ListProductImage" src={`data:image/jpeg;base64,${User.picture}`} alt="Ad" /> :
                                                     <img className="ListProductImage" src="https://capitant.be/wp-content/themes/capitant/assets/images/no-image.png" alt="Ad" />
                                                 }</td>
                                             <td className="Name">{User.name.trim()}</td>
@@ -51,10 +83,10 @@ class Users extends Component<any, any>
                                             <td className="Phone">{User.phone}</td>
                                             <td className="Location">{User.location}</td>
                                             <td className="IsActive">
-                                                <Checkbox name="mandatory" styles={{ root: { width: 150 } }} checked={User.isActive} />
+                                                <Checkbox name="isActive" styles={{ root: { width: 150 } }} checked={User.isActive} onChange={this.handleChange.bind(this, index)} />
                                             </td>
                                             <td className="Permission">
-                                                <Checkbox name="mandatory" styles={{ root: { width: 150 } }} checked={User.permission} />
+                                                <Checkbox name="permission" styles={{ root: { width: 150 } }} checked={User.permission} onChange={this.handleChange.bind(this, index)} />
                                             </td>
 
 

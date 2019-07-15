@@ -42,7 +42,7 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
 
         // POST: api/Classifieds
         [HttpPost]
-        public void PostUser([FromBody] User user)
+        public void PostUser([FromBody] List<User> user)
         {
             UserServices.AddOrUpdateUser(user);
         }
