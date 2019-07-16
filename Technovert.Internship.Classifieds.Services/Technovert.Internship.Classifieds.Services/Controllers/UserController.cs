@@ -8,6 +8,7 @@ using Technovert.Internship.Classifieds.Services;
 using Dapper;
 using Technovert.Internship.Classifieds.Services.Generic;
 using Technovert.Internship.Classifieds.Services.Services;
+using Technovert.Internship.Classifieds.Services.Models;
 
 namespace Technovert.Internship.Classifieds.Services.Controllers
 {
@@ -40,17 +41,53 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
                 return UserServices.GetUsers(id);
         }
 
-        // POST: api/Classifieds
+        [Route("FindUser/{Name}")]
         [HttpPost]
-        public void PostUser([FromBody] List<User> user)
+        public bool FindUser(string Name)
         {
-            UserServices.AddOrUpdateUser(user);
+            if (UserServices.GetUserByName(Name))
+                return true;
+            else
+                return false;
+        }
+
+        [Route("Validate/")]
+        [HttpPost]
+        public ActionResult<User> ValidateUser([FromBody]Credentials credentials)
+        {
+            User user= UserServices.ValidateUser(credentials);
+            if (user!=null)
+                return user;
+            else
+                return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("SignUp/")]
+        public ActionResult UserSignUp([FromBody] UserRegistration userInfo)
+        {
+            //if (UserServices.UpsertUserCredentials(userInfo))
+                return Ok();
+            //else
+            //    return BadRequest();
+        }
+
+        [HttpPost]
+        public ActionResult PostUser([FromBody] List<User> user)
+        {
+            if (UserServices.AddOrUpdateUser(user)!=0)
+                return Ok();
+            else
+                return BadRequest();
         }
 
         [HttpDelete("{id}")]
-        public void DeleteUser(int id)
+        public ActionResult DeleteUser(int id)
         {
-            UserServices.DeleteUser(id);
+            if (UserServices.DeleteUser(id))
+                return Ok();
+            else
+                return BadRequest();
         }
     }
 }

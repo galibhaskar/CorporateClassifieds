@@ -1,4 +1,4 @@
-import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR, UPSERT_USER_ERROR, UPSERT_USER_SUCCESS,CHANGE_USERS_MODAL_STATUS } from "../Actions/UserActions";
+import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR, UPSERT_USER_ERROR, UPSERT_USER_SUCCESS, CHANGE_USERS_MODAL_STATUS, VALIDATE_USER_BEGIN, VALIDATE_USER_SUCCESS, VALIDATE_USER_ERROR } from "../Actions/UserActions";
 
 const intialstate = {
     Users: [],
@@ -7,7 +7,10 @@ const intialstate = {
     loading: false,
     UpsertUserSuccess: false,
     UpsertError: false,
-    UpsertErrorInfo: ""
+    UpsertErrorInfo: "",
+    UserLoggedIn: false,
+    User: [],
+    UserLogInError: false,
 
 };
 
@@ -53,9 +56,31 @@ export default function UserReducer(state = intialstate, action: any) {
             }
 
         case CHANGE_USERS_MODAL_STATUS:
-            return{
+            return {
                 ...state,
-                UpsertUserSuccess:false
+                UpsertUserSuccess: false
+            }
+
+        case VALIDATE_USER_BEGIN:
+            return {
+                ...state,
+                User: []
+            }
+
+        case VALIDATE_USER_SUCCESS:
+            return {
+                ...state,
+                User: action.payload.UserDetails,
+                UserLoggedIn: true,
+                UserLogInError: false,
+            }
+
+        case VALIDATE_USER_ERROR:
+            return {
+                ...state,
+                User: [],
+                UserLoggedIn: false,
+                UserLogInError: true
             }
 
         default:

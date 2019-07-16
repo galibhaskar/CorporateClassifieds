@@ -8,13 +8,15 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import RootReducer from "./Reducers/RootReducer";
 import Authentication from './Authentication/Authentication';
+import Register from './Authentication/Register';
 
 
 const store = createStore(RootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(<Provider store={store}>
-    <App />
+    {/* <App /> */}
     {/* <Authentication /> */}
+    <Register />
 </Provider>, document.getElementById('root'));
 
 serviceWorker.unregister();

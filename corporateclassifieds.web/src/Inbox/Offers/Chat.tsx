@@ -21,8 +21,9 @@ class Chat extends Component<any, any>{
     }
 
     SendMessage = (event: any) => {
-        let chat = this.state;
-        if (event.key === "Enter") {
+        let chat:any = this.state;
+        chat.Message=chat.Message.trim();
+        if (event.key === "Enter"&&chat.Message!="") {
             // alert(JSON.stringify(chat));
             this.props.dispatch(postMessage(chat));
             // this.props.dispatch(fetchOfferChat(this.props.OfferID));

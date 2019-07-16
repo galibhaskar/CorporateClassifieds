@@ -7,8 +7,8 @@ namespace Technovert.Internship.Classifieds.Services
 {
     public class Credentials
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
+        //public int ID { get; set; }
+        public string Username { get; set; }
         protected virtual string PasswordStored { get; set; }
 
         public string Password

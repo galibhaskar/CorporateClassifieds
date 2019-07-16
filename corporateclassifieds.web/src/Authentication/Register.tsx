@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
-import { DefaultButton, Label } from 'office-ui-fabric-react';
+import { DefaultButton, Label, TextField, PrimaryButton } from 'office-ui-fabric-react';
+import { Card } from 'react-bootstrap';
+import './Register.sass';
+import DefaultProfilePic from '../Images/DefaultProfilePic.png';
+import UserReducer from '../Reducers/UserReducer';
 const imageMaxSize = 10000000 // bytes
 const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
+
+
 const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => { return item.trim() })
 var sortedImgFiles = new Array();
 class Register extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            first_name: '',
-            last_name: '',
-            email: '',
-            password: '', imgToBeUploaded: [], Images: []
+            UserName: '',
+            password: '', User: { name: "", email: "", phone: "", location: "", Picture: [] }
         }
     }
     handleClick() {
         alert("dfsafs");
+        console.log(this.state);
     }
     verifyFile = (files: any) => {
         if (files && files.length > 0) {
@@ -65,15 +66,17 @@ class Register extends Component<any, any> {
                     myFileItemReader.addEventListener("load", () => {
                         // console.log(myFileItemReader.result)
                         myResult = myFileItemReader.result;
-                        let a = myResult.split(',')[1];
+                        // let a = myResult.split(',')[1];
                         // var bytes=this._base64ToArrayBuffer(a);
                         // debugger;
                         // console.log(byte);
                         this.setState({
-                            imgToBeUploaded: [...this.state.imgToBeUploaded, myResult],
-                            Images: [...this.state.Images, { image: a }],
-                            //Images:[...this.state.Images,bytes],
-                            imgsrc: myResult
+                            User: {
+                                Picture: myResult
+                            }
+                            // Images: [...this.state.Images, { image: a }],
+                            // //Images:[...this.state.Images,bytes],
+                            // imgsrc: myResult
                         })
 
                     }, false)
@@ -87,52 +90,15 @@ class Register extends Component<any, any> {
     }
     render() {
         return (
-            <div>
-                <MuiThemeProvider>
-                    <div>
-                        <AppBar
-                            title="Register"
-                        />
-                        <TextField
-                            hintText="Enter your First Name"
-                            floatingLabelText="First Name"
-                            onChange={(event, newValue) => this.setState({ first_name: newValue })}
-                        />
-                        <br />
-                        <TextField
-                            hintText="Enter your Last Name"
-                            floatingLabelText="Last Name"
-                            onChange={(event, newValue) => this.setState({ last_name: newValue })}
-                        />
-                        <br />
-                        <TextField
-                            hintText="Enter your Email"
-                            type="email"
-                            floatingLabelText="Email"
-                            onChange={(event, newValue) => this.setState({ email: newValue })}
-                        />
-                        <br />
-                        <TextField
-                            type="password"
-                            hintText="Enter your Password"
-                            floatingLabelText="Password"
-                            onChange={(event, newValue) => this.setState({ password: newValue })}
-                        />
-                        <br />
-                        <TextField
-                            type="number"
-                            hintText="Enter your Phone Number"
-                            floatingLabelText="Phone"
-                            onChange={(event, newValue) => this.setState({ phone: newValue })}
-                        />
-                        <br />
-                        <TextField
-                            type="text"
-                            hintText="Enter your Location"
-                            floatingLabelText="Location"
-                            onChange={(event, newValue) => this.setState({ location: newValue })}
-                        />
-                        <br />
+            <div className="Registration">
+                <Card className="RegisterCard" border="dark" style={{ width: '18rem' }}>
+                    <Card.Header>
+                        <Card.Title>
+                            Corporate Classifieds
+                        </Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+
                         <Dropzone onDrop={this.handleOnDrop} accept={acceptedFileTypesArray} maxSize={imageMaxSize}>
                             {({ getRootProps, getInputProps }) => (
                                 <section>
@@ -140,12 +106,14 @@ class Register extends Component<any, any> {
                                         <input {...getInputProps()} />
                                         <div className="ms-Grid-row PostAdImage">
                                             <div className="ms-Grid-row pos">
-                                                <div className="ms-Grid-col ms-sm12">
-                                                    <img width={128} height={128} alt="ad" />
-                                                    <div>
-                                                        <DefaultButton text="+Add images" allowDisabledFocus={true} />
-                                                        <Label>(optional)</Label>
+                                                <div className="ms-Grid-col ms-sm12 profilePic">
+                                                    {this.state.User.Picture.length == 0 ? <div>
+                                                        <img width={128} height={128} src={DefaultProfilePic} alt="ad" />
+
+                                                        <i className="fas fa-plus"></i>
+                                                        {/* <DefaultButton text="+Add images" allowDisabledFocus={true} /> */}
                                                     </div>
+                                                        : <img width={128} height={128} src={this.state.User.Picture} alt="ad" />}
                                                 </div>
                                             </div>
                                         </div>
@@ -154,9 +122,51 @@ class Register extends Component<any, any> {
                                 </section>
                             )}
                         </Dropzone>
-                        <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleClick.bind(this)} />
-                    </div>
-                </MuiThemeProvider>
+
+                        <TextField
+                            label="User Name"
+                            name="UserName" placeholder="enter your username"
+                            onChange={(event, newValue) => this.setState({ UserName: newValue })}
+                        />
+                        <br />
+                        <TextField
+                            type="password"
+                            label="Password"
+                            name="Password" placeholder="enter your password"
+                            onChange={(event, newValue) => this.setState({ password: newValue })}
+                        />
+                        <br />
+                        <TextField
+                            label="Name"
+                            name="Name" placeholder="enter your name"
+                            onChange={(event, newValue) => this.setState({ User: { ...this.state.User,name: newValue } })}
+                        />
+
+                        <br />
+                        <TextField
+                            label="Email"
+                            type="email"
+                            name="Email" placeholder="enter your email"
+                            onChange={(event, newValue) => this.setState({ User: { ...this.state.User,email: newValue} } )}
+                        />
+                        <br />
+                        <TextField
+                            type="text"
+                            label="Phone"
+                            name="Phone" placeholder="enter your phone number"
+                            onChange={(event, newValue) => this.setState({ User: { ...this.state.User,phone: newValue } })}
+                        />
+                        <br />
+                        <TextField
+                            type="text"
+                            label="Location"
+                            name="Location" placeholder="enter your location"
+                            onChange={(event, newValue) => this.setState({ User: { ...this.state.User,location: newValue } })}
+                        />
+                        <br />
+                        <PrimaryButton text="Signup" primary={true} style={style} onClick={this.handleClick.bind(this)} />
+                    </Card.Body>
+                </Card>
             </div>
         );
     }

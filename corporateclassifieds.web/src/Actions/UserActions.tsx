@@ -6,7 +6,7 @@ export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
 export const UPSERT_USER_SUCCESS = 'UPSERT_USER_SUCCESS';
 export const UPSERT_USER_ERROR = 'UPSERT_USER_ERROR';
-export const CHANGE_USERS_MODAL_STATUS='CHANGE_USERS_MODAL_STATUS';
+export const CHANGE_USERS_MODAL_STATUS = 'CHANGE_USERS_MODAL_STATUS';
 
 export const ValidateUserBegin = () => ({
     type: VALIDATE_USER_BEGIN
@@ -43,18 +43,23 @@ export const UpsertUserError = (error: any) => ({
     payload: { error }
 })
 
-export const ChangeUsersModalStatus=()=>({
-    type:CHANGE_USERS_MODAL_STATUS
+export const ChangeUsersModalStatus = () => ({
+    type: CHANGE_USERS_MODAL_STATUS
 })
 
 export const ValidateCredentials = (Credentials: any) => {
     return async (dispatch: any) => {
         dispatch(ValidateUserBegin());
         try {
-            const url = "" + Credentials;
-            const res = fetch(url);
-            const response = handleError(res);
-            dispatch(ValidateUserSuccess(response));
+            const url = "https://localhost:44378/api/User/Validate/";
+            const res = await fetch(url, {
+                method: 'post',
+                headers: new Headers({ 'content-type': 'application/json' }),
+                body: JSON.stringify(Credentials)
+            });
+            const response = await handleError(res);
+            const json=await response.json();
+            dispatch(ValidateUserSuccess(json));
         }
         catch (error) {
             return dispatch(ValidateUserError(error));
