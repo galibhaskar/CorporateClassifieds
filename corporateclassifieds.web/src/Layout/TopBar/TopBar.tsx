@@ -47,6 +47,7 @@ class TopBar extends Component<any, any>
 }
 function mapStateToProps(state: any) {
     debugger;
+    console.log(state.UserReducer.User.picture);
     return {
         User: state.UserReducer.User
     }

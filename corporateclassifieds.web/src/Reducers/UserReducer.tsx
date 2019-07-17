@@ -1,4 +1,4 @@
-import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR, UPSERT_USER_ERROR, UPSERT_USER_SUCCESS, CHANGE_USERS_MODAL_STATUS, VALIDATE_USER_BEGIN, VALIDATE_USER_SUCCESS, VALIDATE_USER_ERROR } from "../Actions/UserActions";
+import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR, UPSERT_USER_ERROR, UPSERT_USER_SUCCESS, CHANGE_USERS_MODAL_STATUS, VALIDATE_USER_BEGIN, VALIDATE_USER_SUCCESS, VALIDATE_USER_ERROR, USER_SIGNUP_SUCCESS, USER_SIGNUP_ERROR, USER_SIGNUP_BEGIN, FETCH_USERNAME_SUCCESS, FETCH_USERNAME_ERROR } from "../Actions/UserActions";
 
 const intialstate = {
     Users: [],
@@ -10,8 +10,13 @@ const intialstate = {
     UpsertErrorInfo: "",
     UserLoggedIn: false,
     User: [],
+    Login: false,
     UserLogInError: false,
-
+    SignUp: false,
+    SignUpSuccess: false,
+    SignUpError: false,
+    SignUpErrorInfo: "",
+    UserExists: false,
 };
 
 export default function UserReducer(state = intialstate, action: any) {
@@ -64,7 +69,9 @@ export default function UserReducer(state = intialstate, action: any) {
         case VALIDATE_USER_BEGIN:
             return {
                 ...state,
-                User: []
+                User: [],
+                Login: true,
+                SignUp: false
             }
 
         case VALIDATE_USER_SUCCESS:
@@ -72,6 +79,7 @@ export default function UserReducer(state = intialstate, action: any) {
                 ...state,
                 User: action.payload.UserDetails,
                 UserLoggedIn: true,
+                Login: false,
                 UserLogInError: false,
             }
 
@@ -79,8 +87,47 @@ export default function UserReducer(state = intialstate, action: any) {
             return {
                 ...state,
                 User: [],
+                Login: true,
                 UserLoggedIn: false,
                 UserLogInError: true
+            }
+
+        case USER_SIGNUP_BEGIN:
+            return {
+                ...state,
+                SignUp: true,
+                SignUpSuccess: false
+            }
+
+        case USER_SIGNUP_SUCCESS:
+            return {
+                ...state,
+                SignUp: false,
+                SignUpSuccess: true,
+                SignUpError: false,
+                UserLoggedIn: false
+            }
+
+        case USER_SIGNUP_ERROR:
+            return {
+                ...state,
+                SignUp: true,
+                SignUpSuccess: false,
+                SignUpError: true,
+                SignUpErrorInfo: action.payload.error,
+                UserLoggedIn: false
+            }
+
+        case FETCH_USERNAME_SUCCESS:
+            return {
+                ...state,
+                UserExists: true
+            }
+
+        case FETCH_USERNAME_ERROR:
+            return {
+                ...state,
+                UserExists: false
             }
 
         default:

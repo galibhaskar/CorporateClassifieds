@@ -13,11 +13,11 @@ namespace Technovert.Internship.Classifieds.Services.Services
     public class UserServices : IUserServices
     {
 
-        public IEnumerable<User> GetUsers(int id = 0)
+        public List<User> GetUsers(int id = 0)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@id", id);
-            return Procedure.ExecuteProcedure<User>("GetUser", param);
+            return Procedure.ExecuteProcedure<User>("GetUser", param).ToList();
         }
 
 
@@ -28,7 +28,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
                 try
                 {
                     string sql = "select count(*) from Credentials where UserName='" + Name + "'";
-                    if (con.Query(sql).Count() != 0)
+                    int row = (int)con.Query<int>(sql).First();
+                    if (row != 0)
                         return true;
                     else
                         return false;
@@ -71,7 +72,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
                     List<User> userDetails = new List<User>();
                     userDetails.Add(userInfo.user);
                     int UserID = AddOrUpdateUser(userDetails);
-                    if (GetUsers(UserID).Count() == 0)
+                    if (GetUsers(UserID).Count == 0)
                     {
                         Credentials credentials = new Credentials();
                         credentials.Username = userInfo.Username;
@@ -127,7 +128,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
                     param.Add("@RowCount", direction: ParameterDirection.ReturnValue);
                     Procedure.ExecuteProcedure<string>("AddOrUpdateUser", param);
                     int newUserID = param.Get<int>("@RowCount");
-                    if (user[i].ID == null)
+                    if (user[i].ID ==0)
                         return newUserID;
                 }
                 return 1;

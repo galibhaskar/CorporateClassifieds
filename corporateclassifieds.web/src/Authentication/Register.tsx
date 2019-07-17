@@ -5,10 +5,12 @@ import { DefaultButton, Label, TextField, PrimaryButton } from 'office-ui-fabric
 import { Card } from 'react-bootstrap';
 import './Register.sass';
 import DefaultProfilePic from '../Images/DefaultProfilePic.png';
-import UserReducer from '../Reducers/UserReducer';
+import Authentication from './Authentication';
+import { RegisterUser, UserSignUpBegin, ValidateUserBegin, CheckUserName } from '../Actions/UserActions';
+import TechnovertLogo from '../Images/TechnovertLogo.png';
 const imageMaxSize = 10000000 // bytes
 const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
-
+var Background = require('../Images/background.jfif');
 
 const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => { return item.trim() })
 var sortedImgFiles = new Array();
@@ -19,16 +21,36 @@ class Register extends Component<any, any> {
             UserName: '',
             password: '', User: { name: "", email: "", phone: "", location: "", Picture: [] }
         }
+        this.props.dispatch(UserSignUpBegin());
+    }
+    handlePress(e: any) {
+        if (e.keyCode == 13) {
+            let UserDetails = this.state;
+            console.log(UserDetails.User.Picture);
+            this.props.dispatch(RegisterUser(UserDetails));
+            this.setState({
+                UserName: '', password: '', User: { name: "", email: "", phone: "", location: "", Picture: [] }
+            });
+        }
     }
     handleClick() {
-        alert("dfsafs");
-        console.log(this.state);
+        let UserDetails = this.state;
+        // console.log(this.state);
+        this.props.dispatch(RegisterUser(UserDetails));
+        console.log(UserDetails.User.Picture);
+        this.setState({
+            UserName: '', password: '', User: { name: "", email: "", phone: "", location: "", Picture: [] }
+        });
     }
+
+    handleBack() {
+        this.props.dispatch(ValidateUserBegin());
+    }
+
     verifyFile = (files: any) => {
         if (files && files.length > 0) {
 
             files.map((item: any) => {
-                // debugger;
                 const currentFile = item
                 const currentFileType = currentFile.type
                 const currentFileSize = currentFile.size
@@ -50,123 +72,125 @@ class Register extends Component<any, any> {
         }
     }
 
-    handleOnDrop = (files: any, rejectedFiles: any) => {
-        if (rejectedFiles && rejectedFiles.length > 0) {
-            this.verifyFile(rejectedFiles)
+    handleOnDrop = (file: any, rejectedFile: any) => {
+        debugger;
+        if (rejectedFile && rejectedFile.length > 0) {
+            this.verifyFile(rejectedFile)
         }
 
-        if (files && files.length > 0) {
-            const isVerified = this.verifyFile(files)
+        if (file) {
+            const isVerified = this.verifyFile(file)
             if (isVerified === true) {
-                // imageBase64Data 
-                files.map((item: any) => {
-                    let currentFile: any = item
-                    let myFileItemReader = new FileReader()
-                    let myResult: any
-                    myFileItemReader.addEventListener("load", () => {
-                        // console.log(myFileItemReader.result)
-                        myResult = myFileItemReader.result;
-                        // let a = myResult.split(',')[1];
-                        // var bytes=this._base64ToArrayBuffer(a);
-                        // debugger;
-                        // console.log(byte);
-                        this.setState({
-                            User: {
-                                Picture: myResult
-                            }
-                            // Images: [...this.state.Images, { image: a }],
-                            // //Images:[...this.state.Images,bytes],
-                            // imgsrc: myResult
-                        })
-
-                    }, false)
-
-                    myFileItemReader.readAsDataURL(currentFile)
-
-                })
-
+                let currentFile: any = file[0];
+                let myFileItemReader = new FileReader();
+                let myResult: any;
+                myFileItemReader.addEventListener("load", () => {
+                    myResult = myFileItemReader.result;
+                    let image = myResult.split("data:image/jpeg;base64,")[1];
+                    // console.log(image);
+                    this.setState({
+                        User: { ...this.state.User, Picture: image }
+                    })
+                }, false);
+                // console.log(this.state);
+                myFileItemReader.readAsDataURL(currentFile);
             }
         }
     }
     render() {
         return (
             <div className="Registration">
-                <Card className="RegisterCard" border="dark" style={{ width: '18rem' }}>
-                    <Card.Header>
-                        <Card.Title>
-                            Corporate Classifieds
-                        </Card.Title>
-                    </Card.Header>
-                    <Card.Body>
+                {this.props.UserSignUp ?
+                    <div className="Authentication" onKeyDown={this.handlePress.bind(this)}>
+                        <div className="Image">
+                            <img src={Background} className="Background" />
+                        </div>
+                        <div className="Login">
+                            <img src={TechnovertLogo} className="TechnovertLogo" />
 
-                        <Dropzone onDrop={this.handleOnDrop} accept={acceptedFileTypesArray} maxSize={imageMaxSize}>
-                            {({ getRootProps, getInputProps }) => (
-                                <section>
-                                    <div {...getRootProps()}>
-                                        <input {...getInputProps()} />
-                                        <div className="ms-Grid-row PostAdImage">
-                                            <div className="ms-Grid-row pos">
-                                                <div className="ms-Grid-col ms-sm12 profilePic">
-                                                    {this.state.User.Picture.length == 0 ? <div>
-                                                        <img width={128} height={128} src={DefaultProfilePic} alt="ad" />
 
-                                                        <i className="fas fa-plus"></i>
-                                                        {/* <DefaultButton text="+Add images" allowDisabledFocus={true} /> */}
+
+                            <Card className="RegisterCard" border="light" style={{ width: '18rem' }}>
+                                <Card.Header>
+                                    <Card.Title>
+                                        Corporate Classifieds
+                                    </Card.Title>
+                                </Card.Header>
+                                <Card.Body>
+
+                                    <Dropzone onDrop={this.handleOnDrop} accept={acceptedFileTypesArray} maxSize={imageMaxSize}>
+                                        {({ getRootProps, getInputProps }) => (
+                                            <section>
+                                                <div {...getRootProps()}>
+                                                    <input {...getInputProps()} />
+                                                    <div className="ms-Grid-row PostAdImage">
+                                                        <div className="ms-Grid-row pos">
+                                                            <div className="ms-Grid-col ms-sm12 profilePic">
+                                                                {this.state.User.Picture.length == 0 ? <div>
+                                                                    <img className="ProfilePic" width={128} height={128} src={DefaultProfilePic} alt="ad" />
+
+                                                                    <i className="fas fa-plus"></i>
+                                                                    {/* <DefaultButton text="+Add images" allowDisabledFocus={true} /> */}
+                                                                </div>
+                                                                    : <img className="ProfilePic" width={128} height={128} src={`data:image/jpeg;base64,${this.state.User.Picture}`} alt="ad" />}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                        : <img width={128} height={128} src={this.state.User.Picture} alt="ad" />}
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                </section>
-                            )}
-                        </Dropzone>
+                                            </section>
+                                        )}
+                                    </Dropzone>
 
-                        <TextField
-                            label="User Name"
-                            name="UserName" placeholder="enter your username"
-                            onChange={(event, newValue) => this.setState({ UserName: newValue })}
-                        />
-                        <br />
-                        <TextField
-                            type="password"
-                            label="Password"
-                            name="Password" placeholder="enter your password"
-                            onChange={(event, newValue) => this.setState({ password: newValue })}
-                        />
-                        <br />
-                        <TextField
-                            label="Name"
-                            name="Name" placeholder="enter your name"
-                            onChange={(event, newValue) => this.setState({ User: { ...this.state.User,name: newValue } })}
-                        />
+                                    {this.props.UserExists && <Card.Text className="UserExists">UserName already Exists</Card.Text>}
 
-                        <br />
-                        <TextField
-                            label="Email"
-                            type="email"
-                            name="Email" placeholder="enter your email"
-                            onChange={(event, newValue) => this.setState({ User: { ...this.state.User,email: newValue} } )}
-                        />
-                        <br />
-                        <TextField
-                            type="text"
-                            label="Phone"
-                            name="Phone" placeholder="enter your phone number"
-                            onChange={(event, newValue) => this.setState({ User: { ...this.state.User,phone: newValue } })}
-                        />
-                        <br />
-                        <TextField
-                            type="text"
-                            label="Location"
-                            name="Location" placeholder="enter your location"
-                            onChange={(event, newValue) => this.setState({ User: { ...this.state.User,location: newValue } })}
-                        />
-                        <br />
-                        <PrimaryButton text="Signup" primary={true} style={style} onClick={this.handleClick.bind(this)} />
-                    </Card.Body>
-                </Card>
+                                    <TextField label="User Name" name="UserName" value={this.state.UserName} placeholder="enter your username" 
+                                    onChange={(event, newValue) => this.setState({ UserName: newValue })} onBlur={()=>this.props.dispatch(CheckUserName(this.state.UserName))}/>
+
+                                    <br />
+
+                                    <TextField type="password" label="Password" name="Password" value={this.state.password} placeholder="enter your password"
+                                        onChange={(event, newValue) => {
+                                            this.setState({ password: newValue })
+                                        }}
+                                         />
+
+                                    <br />
+
+                                    <TextField label="Name" name="Name" placeholder="enter your name" value={this.state.User.name}
+                                        onChange={(event, newValue) => this.setState({ User: { ...this.state.User, name: newValue } })} />
+
+
+                                    <br />
+
+                                    <TextField label="Email" type="email" name="Email" value={this.state.User.email} placeholder="enter your email"
+                                        onChange={(event, newValue) => this.setState({ User: { ...this.state.User, email: newValue } })} />
+
+                                    <br />
+
+                                    <TextField type="number" label="Phone" name="Phone" value={this.state.User.phone} placeholder="enter your phone number"
+                                        onChange={(event, newValue) => this.setState({ User: { ...this.state.User, phone: newValue } })} />
+
+
+                                    <br />
+
+                                    <TextField type="text" label="Location" name="Location" value={this.state.User.location} placeholder="enter your location"
+                                        onChange={(event, newValue) => this.setState({ User: { ...this.state.User, location: newValue } })} />
+
+                                    <br />
+
+                                    <Card.Text className="Buttons">
+                                        <PrimaryButton text="Back" primary={true} style={style} onClick={this.handleBack.bind(this)} />
+                                        <PrimaryButton text="Signup" primary={true} style={style} onClick={this.handleClick.bind(this)} />
+                                    </Card.Text>
+
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    </div> :
+
+                    <Authentication />
+                }
             </div>
         );
     }
@@ -174,4 +198,14 @@ class Register extends Component<any, any> {
 const style = {
     margin: 15,
 };
-export default connect()(Register);
+
+function mapStateToProps(state: any) {
+    return {
+        UserSignnedIn: state.UserReducer.SignIn,
+        UserSignError: state.UserReducer.SignUpError,
+        UserSignUp: state.UserReducer.SignUp,
+        UserExists: state.UserReducer.UserExists
+    }
+}
+
+export default connect(mapStateToProps)(Register);

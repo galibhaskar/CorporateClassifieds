@@ -37,13 +37,14 @@ class App extends React.Component<any, any> {
 
             <div className="main-content">
 
-              
+
               <Route path="/Classifieds" component={Classifieds} />
               <Route path="/MyClassifieds" component={MyClassifieds} />
               <Route path="/Admin" component={Admin} />
+              <Route path="/Profile" component={Admin} />
               <Route path="/Inbox" component={Inbox} />
 
-              <Redirect to="/Classifieds/SaleRent"/>
+              <Redirect to="/Classifieds/SaleRent" />
             </div>
 
           </div>

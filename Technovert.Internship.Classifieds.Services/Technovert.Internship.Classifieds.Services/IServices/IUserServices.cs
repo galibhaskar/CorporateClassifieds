@@ -6,7 +6,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
     public interface IUserServices
     {
        
-        IEnumerable<User> GetUsers(int id = 0);
+        List<User> GetUsers(int id = 0);
 
         bool GetUserByName(string Name);
 

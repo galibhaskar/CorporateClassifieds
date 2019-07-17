@@ -9,12 +9,12 @@ import { connect } from "react-redux";
 initializeIcons();
 class SideMenu extends Component<any, any>
 {
-  constructor(props:any){
+  constructor(props: any) {
     super(props);
-    this.state={selectedMenuID:'Classifieds'}
+    this.state = { selectedMenuID: 'Classifieds' }
   }
-  Active(e:any) {
-    this.setState({selectedMenuID:e.currentTarget.id});
+  Active(e: any) {
+    this.setState({ selectedMenuID: e.currentTarget.id });
     // document.getElementById(this.state.selectedMenuID).className="menu";
   }
   render() {
@@ -22,7 +22,7 @@ class SideMenu extends Component<any, any>
 
       <div className="sidebar">
         <nav>
-          <Link to="/Classifieds/SaleRent" id="Classifieds" className={`menu${this.state.selectedMenuID=='Classifieds'?" active":""}`} onClick={this.Active.bind(this)}>
+          <Link to="/Classifieds/SaleRent" id="Classifieds" className={`menu${this.state.selectedMenuID == 'Classifieds' ? " active" : ""}`} onClick={this.Active.bind(this)}>
             <span className="sidebar-link-icon">
               <Icon iconName="Shop" />
             </span>
@@ -31,7 +31,7 @@ class SideMenu extends Component<any, any>
                     </span>
           </Link>
 
-          <Link to="/MyClassifieds/ActiveClassifieds" id="MyClassifieds" className={`menu${this.state.selectedMenuID=='MyClassifieds'?" active":""}`} onClick={this.Active.bind(this)}>
+          <Link to="/MyClassifieds/ActiveClassifieds" id="MyClassifieds" className={`menu${this.state.selectedMenuID == 'MyClassifieds' ? " active" : ""}`} onClick={this.Active.bind(this)}>
             <span className="sidebar-link-icon">
               <Icon iconName="Shop" />
             </span>
@@ -40,7 +40,7 @@ class SideMenu extends Component<any, any>
                     </span>
           </Link>
 
-          <Link to="/Inbox/Offers" className={`menu${this.state.selectedMenuID=='Inbox'?" active":""}`} id="Inbox" onClick={this.Active.bind(this)}>
+          <Link to="/Inbox/Offers" className={`menu${this.state.selectedMenuID == 'Inbox' ? " active" : ""}`} id="Inbox" onClick={this.Active.bind(this)}>
             <span className="sidebar-link-icon">
               <Icon iconName="MailSolid" />
             </span>
@@ -49,14 +49,25 @@ class SideMenu extends Component<any, any>
                     </span>
           </Link>
 
-          <Link to="/Admin/ReportedAds" className={`menu${this.state.selectedMenuID=='Admin'?" active":""}`} id="Admin"onClick={this.Active.bind(this)}>
+          {this.props.IsUser && <Link to="/Admin/ReportedAds" className={`menu${this.state.selectedMenuID == 'Admin' ? " active" : ""}`} id="Admin" onClick={this.Active.bind(this)}>
             <span className="sidebar-link-icon">
               <Icon iconName="SecurityGroup" />
             </span>
             <span className="sidebar-link-text">
               Admin
                     </span>
-          </Link>
+          </Link>}
+          
+            <Link to="/Profile" className={`menu${this.state.selectedMenuID == 'Profile' ? " active" : ""}`} id="Profile" onClick={this.Active.bind(this)}>
+              <span className="sidebar-link-icon">
+                <Icon iconName="SecurityGroup" />
+              </span>
+              <span className="sidebar-link-text">
+                Profile
+                  </span>
+            </Link>
+
+          
 
         </nav>
       </div>
@@ -67,8 +78,9 @@ class SideMenu extends Component<any, any>
   }
 }
 function mapStateToProps(state: any) {
+  debugger;
   return {
-    user: state.user
+    IsUser: state.UserReducer.User.permission
   }
 }
 export default connect(mapStateToProps)(SideMenu);

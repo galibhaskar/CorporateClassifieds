@@ -43,12 +43,12 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
 
         [Route("FindUser/{Name}")]
         [HttpPost]
-        public bool FindUser(string Name)
+        public ActionResult FindUser(string Name)
         {
             if (UserServices.GetUserByName(Name))
-                return true;
+                return Ok();
             else
-                return false;
+                return BadRequest();
         }
 
         [Route("Validate/")]
@@ -66,10 +66,10 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
         [Route("SignUp/")]
         public ActionResult UserSignUp([FromBody] UserRegistration userInfo)
         {
-            //if (UserServices.UpsertUserCredentials(userInfo))
+            if (UserServices.UpsertUserCredentials(userInfo))
                 return Ok();
-            //else
-            //    return BadRequest();
+            else
+                return BadRequest();
         }
 
         [HttpPost]
