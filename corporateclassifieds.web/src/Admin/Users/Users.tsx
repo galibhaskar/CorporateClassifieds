@@ -89,10 +89,10 @@ class Users extends Component<any, any>
                                             <td className="Phone">{User.phone}</td>
                                             <td className="Location">{User.location}</td>
                                             <td className="IsActive">
-                                                <Checkbox name="isActive" styles={{ root: { width: 150 } }} checked={User.isActive} onChange={this.handleChange.bind(this, index)} />
+                                                <Checkbox name="isActive" disabled={this.props.LoggedInUser.id==User.id} styles={{ root: { width: 150 } }} checked={User.isActive} onChange={this.handleChange.bind(this, index)} />
                                             </td>
                                             <td className="Permission">
-                                                <Checkbox name="permission" styles={{ root: { width: 150 } }} checked={User.permission} onChange={this.handleChange.bind(this, index)} />
+                                                <Checkbox name="permission" disabled={this.props.LoggedInUser.id==User.id} styles={{ root: { width: 150 } }} checked={User.permission} onChange={this.handleChange.bind(this, index)} />
                                             </td>
 
 
@@ -129,7 +129,8 @@ function mapStateToProps(state: any) {
     debugger;
     return {
         Users: state.UserReducer.Users,
-        Updated:state.UserReducer.UpsertUserSuccess
+        Updated:state.UserReducer.UpsertUserSuccess,
+        LoggedInUser:state.UserReducer.User
     }
 }
 export default connect(mapStateToProps)(Users);

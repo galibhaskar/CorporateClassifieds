@@ -9,11 +9,13 @@ using Dapper;
 using Technovert.Internship.Classifieds.Services.Generic;
 using Technovert.Internship.Classifieds.Services.Services;
 using Technovert.Internship.Classifieds.Services.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Technovert.Internship.Classifieds.Services.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         public IUserServices UserServices { get; set; }

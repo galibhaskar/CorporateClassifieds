@@ -14,14 +14,14 @@ class ReportedLists extends Component<any, any>
 {
     RemoveAd(AdID: number) {
         // alert(AdID);
-        this.props.dispatch(DeleteAd(AdID, 3)); ///////Mention the login user id in place of 3
+        this.props.dispatch(DeleteAd(AdID, this.props.LoggedInUser.id)); ///////Mention the login user id in place of 3
     }
 
     DisplayAd = (AdID: number) => {
         alert(window.location.pathname);
-        let path="/Classifieds/SaleRent#"+AdID;
+        let path = "/Classifieds/SaleRent#" + AdID;
         alert(path);
-        window.location.href=path;
+        window.location.href = path;
         //     this.props.dispatch(changeDisplayAd())
         //     this.props.dispatch(fetchAdByID(AdID));
     }
@@ -150,7 +150,8 @@ function mapStateToProps(state: any) {
     debugger;
     return {
         ReportedAds: state.ReportReducer.ReportedAds,
-        ReportedAdsError: state.ReportReducer.ReportError
+        ReportedAdsError: state.ReportReducer.ReportError,
+        LoggedInUser: state.UserReducer.User
     }
 }
 export default connect(mapStateToProps)(ReportedLists);

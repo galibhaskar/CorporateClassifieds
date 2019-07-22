@@ -251,6 +251,16 @@ namespace Technovert.Internship.Classifieds.Services.Services
                                 inner join Category category on category.ID=ads.Category
                                 where ads.StatusID<>1 and ads.CreatedBy=" + id + " order by CURRENT_TIMESTAMP offset " + start + " rows fetch next " + (end - start) + " rows only";
                 }
+                else if(StatusCode=="Removed by You")
+                {
+                    sql = @"select ads.ID,ads.Name,ads.Type,ads.Price,ads.Views,ads.Category,ads.Description,ads.Expiry,ads.Created,ads.Modified,
+                                created.*,modifiedBy.*,status.*,category.* from Ads ads
+                                inner join Users created on created.ID = ads.CreatedBy
+                                inner join Users modifiedBy on modifiedBy.ID = ads.ModifiedBy
+                                inner join Status status on status.ID = ads.StatusID
+                                inner join Category category on category.ID=ads.Category
+                                where (ads.StatusID=3 or ads.StatusID=4) and ads.CreatedBy=" + id + " order by CURRENT_TIMESTAMP offset " + start + " rows fetch next " + (end - start) + " rows only";
+                }
                 else
                 {
                     sql = @"select ads.ID,ads.Name,ads.Type,ads.Price,ads.Views,ads.Category,ads.Description,ads.Expiry,ads.Created,ads.Modified,
@@ -344,7 +354,7 @@ namespace Technovert.Internship.Classifieds.Services.Services
                     con.Query(sql);
                     return true;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -428,8 +438,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
                     int Access = con.Query<int>(sql).First();
                     if (Access != 0)
                     {
-                        //string sql1 = "update Ads set StatusID=4,ModifiedBy=" + UserID + " where ID=" + id;
-                        //con.Query(sql1);
+                        string sql1 = "update Ads set StatusID=4,ModifiedBy=" + UserID + " where ID=" + id;
+                        con.Query(sql1);
                         return true;
                     }
                     else
@@ -444,24 +454,34 @@ namespace Technovert.Internship.Classifieds.Services.Services
             }
         }
 
-        public List<Ads> GetAllReportAds()
+        public List<Ads> GetAllReportAds(int UserID)
         {
             using (IDbConnection con = new SqlConnection(@"Server=intdev-pc;Initial Catalog=classifieds;Integrated Security=True"))
             {
                 try
                 {
-
-                    string sql1 = @"select distinct ads.ID,ads.Name,ads.Type,ads.Category,ads.Description,ads.Created,
+                    string sql;
+                    if (UserID != 0)
+                    {
+                        sql = @"select distinct ads.ID,ads.Name,ads.Type,ads.Category,ads.Description,ads.Created,
+                                created.*,category.*from Ads ads
+                                inner join Users created on created.ID = ads.CreatedBy
+                                inner join Category category on category.ID=ads.Category 
+                                inner join Reports reports on reports.AdID=ads.ID where ads.StatusID=1 and ads.CreatedBy=" + UserID;
+                    }
+                    else
+                    {
+                        sql= @"select distinct ads.ID,ads.Name,ads.Type,ads.Category,ads.Description,ads.Created,
                                 created.*,category.*from Ads ads
                                 inner join Users created on created.ID = ads.CreatedBy
                                 inner join Category category on category.ID=ads.Category 
                                 inner join Reports reports on reports.AdID=ads.ID where ads.StatusID=1";
-
+                    }
 
                     var adimages = con.Query("select  img.[Image],img.AdID from Images img group by img.AdID,img.[Image]", new[] { typeof(Images) }, objects1 => { Images image = objects1[0] as Images; return image; });
 
                     ReportServices reportServices = new ReportServices();
-                    List<Ads> ReportedAds = (List<Ads>)con.Query<Ads>(sql1, new[] { typeof(Ads), typeof(User), typeof(Category) }, ReportedAdobject =>
+                    List<Ads> ReportedAds = (List<Ads>)con.Query<Ads>(sql, new[] { typeof(Ads), typeof(User), typeof(Category) }, ReportedAdobject =>
                      {
                          Ads ad = ReportedAdobject[0] as Ads;
 
@@ -474,8 +494,8 @@ namespace Technovert.Internship.Classifieds.Services.Services
 
                          var adimage = adimages.FirstOrDefault(s => s.AdID == ad.ID);
                          ad.Images = new List<Images>();
-                         if(adimage!=null)
-                            ad.Images.Add(adimage);
+                         if (adimage != null)
+                             ad.Images.Add(adimage);
 
 
                          return ad;

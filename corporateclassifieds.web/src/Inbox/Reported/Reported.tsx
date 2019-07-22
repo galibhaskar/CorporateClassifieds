@@ -1,18 +1,13 @@
 import React from 'react';
-import { Card, ListGroup, InputGroup, FormControl } from "react-bootstrap";
+import { Card, ListGroup } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
-import MessageList from '../MessageList';
-import Icon from 'react-icons-kit';
 import './Reported.sass';
 import { connect } from 'react-redux';
-import { fetchUserAds } from '../../Actions/AdActions';
+
 
 class Reports extends React.Component<any, any>{
-    componentWillMount() {
-        debugger;
-        this.props.dispatch(fetchUserAds(2, "Reported", this.props.ReportedAds.length));    /////////user id need to be given in the first field when authentication is added
-    }
+
     render() {
         return (
             <Card className="Reported" >
@@ -80,7 +75,8 @@ class Reports extends React.Component<any, any>{
 function mapStateToProps(state: any) {
     return {
         ReportedAds: state.AdReducer.ReportedAds,
-        ReportedAdsAvailable: state.AdReducer.ReportedAdsAvailable
+        ReportedAdsAvailable: state.AdReducer.ReportedAdsAvailable,
+        LoggedInUser: state.UserReducer.User
     }
 }
 export default connect(mapStateToProps)(Reports);

@@ -51,7 +51,7 @@ export function FetchReports() {
         try {
             debugger;
             dispatch(FetchReportsBegin());
-            const url = "https://localhost:44378/api/Ads/GetReportedAds/";
+            const url = "https://localhost:44378/api/Ads/GetReportedAds/0";
             const response = await fetch(url);
             const res = await handleErrors(response);
             const json = await res.json();

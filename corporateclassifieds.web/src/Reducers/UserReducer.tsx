@@ -1,5 +1,10 @@
 import { FETCH_USERS_BEGIN, FETCH_USERS_SUCCESS, FETCH_USERS_ERROR, UPSERT_USER_ERROR, UPSERT_USER_SUCCESS, CHANGE_USERS_MODAL_STATUS, VALIDATE_USER_BEGIN, VALIDATE_USER_SUCCESS, VALIDATE_USER_ERROR, USER_SIGNUP_SUCCESS, USER_SIGNUP_ERROR, USER_SIGNUP_BEGIN, FETCH_USERNAME_SUCCESS, FETCH_USERNAME_ERROR } from "../Actions/UserActions";
 
+var Token: any = localStorage.getItem("UserToken");
+var Cookie = Token != null ? JSON.parse(Token) : null;
+
+console.log("UserReducer", Cookie);
+debugger;
 const intialstate = {
     Users: [],
     UserFetchError: false,
@@ -9,8 +14,8 @@ const intialstate = {
     UpsertError: false,
     UpsertErrorInfo: "",
     UserLoggedIn: false,
-    User: [],
-    Login: false,
+    User: Cookie != null ? Cookie.User : [],
+    Login: Cookie != null ? Cookie.UserLoggedIn : false,
     UserLogInError: false,
     SignUp: false,
     SignUpSuccess: false,

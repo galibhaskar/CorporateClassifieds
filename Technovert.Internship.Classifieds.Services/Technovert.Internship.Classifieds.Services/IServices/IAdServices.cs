@@ -20,6 +20,6 @@ namespace Technovert.Internship.Classifieds.Services.Services
 
         bool ViewCount(int AdID);
 
-        List<Ads> GetAllReportAds();
+        List<Ads> GetAllReportAds(int UserID);
     }
 }

@@ -7,11 +7,11 @@ export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
 export const UPSERT_USER_SUCCESS = 'UPSERT_USER_SUCCESS';
 export const UPSERT_USER_ERROR = 'UPSERT_USER_ERROR';
 export const CHANGE_USERS_MODAL_STATUS = 'CHANGE_USERS_MODAL_STATUS';
-export const USER_SIGNUP_BEGIN='USER_SIGNUP_BEGIN';
+export const USER_SIGNUP_BEGIN = 'USER_SIGNUP_BEGIN';
 export const USER_SIGNUP_ERROR = 'USER_SIGNUP_ERROR';
 export const USER_SIGNUP_SUCCESS = 'USER_SIGNUP_SUCCESS';
-export const FETCH_USERNAME_ERROR='FETCH_USERNAME_ERROR';
-export const FETCH_USERNAME_SUCCESS='FETCH_USERNAME_SUCCESS';
+export const FETCH_USERNAME_ERROR = 'FETCH_USERNAME_ERROR';
+export const FETCH_USERNAME_SUCCESS = 'FETCH_USERNAME_SUCCESS';
 // export const USER_SIGNIN_ERROR='USER_SIGNIN_ERROR'
 
 
@@ -54,8 +54,8 @@ export const ChangeUsersModalStatus = () => ({
     type: CHANGE_USERS_MODAL_STATUS
 })
 
-export const UserSignUpBegin=()=>({
-    type:USER_SIGNUP_BEGIN
+export const UserSignUpBegin = () => ({
+    type: USER_SIGNUP_BEGIN
 })
 
 export const UserSignUpSuccess = () => ({
@@ -71,17 +71,17 @@ export const UserSignUpError = (error: any) => ({
 //     type:USER_SIGNIN_BEGIN
 // })
 
-export const FetchUserNameSuccess=()=>({
-    type:FETCH_USERNAME_SUCCESS
+export const FetchUserNameSuccess = () => ({
+    type: FETCH_USERNAME_SUCCESS
 })
 
-export const FetchUserNameError=()=>({
-    type:FETCH_USERNAME_ERROR
+export const FetchUserNameError = () => ({
+    type: FETCH_USERNAME_ERROR
 })
 
 export const ValidateCredentials = (Credentials: any) => {
     return async (dispatch: any) => {
-        
+
         try {
             const url = "https://localhost:44378/api/User/Validate/";
             const res = await fetch(url, {
@@ -91,6 +91,9 @@ export const ValidateCredentials = (Credentials: any) => {
             });
             const response = await handleError(res);
             const json = await response.json();
+            var Cookie = { User: json, LoggedIn: true, Expiry: new Date().getTime() + 30 };
+            console.log(Cookie);
+            localStorage.setItem("UserToken", JSON.stringify(Cookie));
             dispatch(ValidateUserSuccess(json));
         }
         catch (error) {
@@ -99,18 +102,18 @@ export const ValidateCredentials = (Credentials: any) => {
     }
 }
 
-export const CheckUserName=(Username:string)=>{
-    return async (dispatch:any)=>{
-        try{
+export const CheckUserName = (Username: string) => {
+    return async (dispatch: any) => {
+        try {
             debugger;
-            const url="https://localhost:44378/api/User/FindUser/"+Username;
-            const response=await fetch(url,{
-                method:'post'
+            const url = "https://localhost:44378/api/User/FindUser/" + Username;
+            const response = await fetch(url, {
+                method: 'post'
             });
-            const res=await handleError(response);
+            const res = await handleError(response);
             dispatch(FetchUserNameSuccess());
         }
-        catch(error){
+        catch (error) {
             dispatch(FetchUserNameError());
         }
     }

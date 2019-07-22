@@ -15,7 +15,7 @@ initializeIcons();
 class History extends Component<any, any>
 {
     componentDidMount() {
-        this.props.dispatch(fetchUserAds(3, "History", this.props.HistoryAds.length));    /////////user id need to be given in the first field  when authentication is added
+        this.props.dispatch(fetchUserAds(this.props.LoggedInUser.id, "History", this.props.HistoryAds.length));    /////////user id need to be given in the first field  when authentication is added
     }
     componentWillUnmount() {
         this.props.dispatch(changeview(1));
@@ -66,7 +66,8 @@ function mapStateToProps(state: any) {
         loading: state.AdReducer.loading,
         HistoryAds: state.AdReducer.HistoryAds,
         ClassifiedsHistoryAvailable: state.AdReducer.HistoryAdsAvailable,
-        ListView: state.AdReducer.ListView
+        ListView: state.AdReducer.ListView,
+        LoggedInUser:state.UserReducer.User
     }
 }
 export default connect(mapStateToProps)(History);

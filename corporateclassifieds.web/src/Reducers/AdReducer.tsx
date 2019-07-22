@@ -369,6 +369,7 @@ export default function AdReducer(state = intialstate, action: any) {
             return {
                 ...state,
                 loading: true,
+                ReportedAds:[],
                 error: false
             }
 

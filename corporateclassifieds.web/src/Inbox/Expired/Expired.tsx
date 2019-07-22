@@ -7,10 +7,7 @@ import { connect } from 'react-redux';
 import './Expired.sass';
 
 class Expired extends React.Component<any, any>{
-    componentWillMount() {
-        debugger;
-        this.props.dispatch(fetchUserAds(2, "Expired", this.props.ExpiredAds.length));    /////////user id need to be given in the first field when authentication is added
-    }
+    
     componentWillUnmount() {
         this.props.dispatch(clear("Expired"));
     }
@@ -78,7 +75,8 @@ class Expired extends React.Component<any, any>{
 function mapStateToProps(state: any) {
     return {
         ExpiredAds: state.AdReducer.ExpiredAds,
-        ExpiredAdsAvailable: state.AdReducer.ExpiredAdsAvailable
+        ExpiredAdsAvailable: state.AdReducer.ExpiredAdsAvailable,
+        LoggedInUser:state.UserReducer.User
     }
 }
 export default connect(mapStateToProps)(Expired);

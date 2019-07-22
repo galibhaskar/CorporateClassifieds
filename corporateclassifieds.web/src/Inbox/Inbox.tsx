@@ -10,9 +10,13 @@ import Deleted from "./Deleted/Deleted";
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { fetchUserOffers } from "../Actions/OffersActions";
 import Reported from "./Reported/Reported";
+import { fetchReportedAdByID, fetchUserAds } from "../Actions/AdActions";
 class Inbox extends Component<any, any>{
     componentDidMount() {
-        this.props.dispatch(fetchUserOffers(3));
+        this.props.dispatch(fetchUserOffers(this.props.LoggedInUser.id));
+        this.props.dispatch(fetchReportedAdByID(this.props.LoggedInUser.id));
+        this.props.dispatch(fetchUserAds(this.props.LoggedInUser.id, "Removed by You", this.props.DeletedAds.length));
+        this.props.dispatch(fetchUserAds(this.props.LoggedInUser.id, "Expired", this.props.ExpiredAds.length));
     }
     render() {
         return (
@@ -97,7 +101,12 @@ function mapStateToProps(state: any) {
         OffersCount: state.OffersReducer.Offers.length,
         DeletedAdsCount: state.AdReducer.DeletedAds.length,
         ReportedAdsCount: state.AdReducer.ReportedAds.length,
-        ExpiredAdsCount: state.AdReducer.ExpiredAds.length
+        ExpiredAdsCount: state.AdReducer.ExpiredAds.length,
+        ExpiredAds: state.AdReducer.ExpiredAds,
+        ExpiredAdsAvailable: state.AdReducer.ExpiredAdsAvailable,
+        DeletedAds: state.AdReducer.DeletedAds,
+        DeletedAdsAvailable: state.AdReducer.DeletedAdsAvailable,
+        LoggedInUser: state.UserReducer.User
     }
 }
 export default connect(mapStateToProps)(Inbox);

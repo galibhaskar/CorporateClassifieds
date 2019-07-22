@@ -55,10 +55,10 @@ namespace Technovert.Internship.Classifieds.Services.Controllers
         //    return ImagesServices.GetImage(id);
         //}
 
-        [HttpGet("GetReportedAds/")]
-        public List<Ads> GetReportedAds()
+        [HttpGet("GetReportedAds/{UserID}")]
+        public List<Ads> GetReportedAds(int UserID=0)
         {
-            return AdService.GetAllReportAds();
+            return AdService.GetAllReportAds(UserID);
         }
 
         [HttpGet("IncreaseView/{AdID}")]

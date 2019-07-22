@@ -10,9 +10,7 @@ import './Deleted.sass';
 
 
 class Deleted extends React.Component<any, any>{
-    componentDidMount() {
-        this.props.dispatch(fetchUserAds(2, "Removed by You", this.props.DeletedAds.length));    /////////user id need to be given in the first field when authentication is added
-    }
+    
     render() {
         return (
             <Card className="Deleted" >
@@ -57,7 +55,7 @@ class Deleted extends React.Component<any, any>{
                         <Route path={"/Inbox/Deleted/" + DeletedAd.name.trim()} component={() =>
                             <Card className="Right">
                                 <Card.Title>
-                                <div className="ChatHeader">
+                                    <div className="ChatHeader">
                                         <Card.Img className="Profile" variant="top" src="https://capitant.be/wp-content/themes/capitant/assets/images/no-image.png" />
                                         <div className="AdDetails">
                                             <Card.Text className="UserName">{DeletedAd.modifiedByUser.name}</Card.Text>
@@ -93,7 +91,8 @@ function mapStateToProps(state: any) {
     debugger;
     return {
         DeletedAds: state.AdReducer.DeletedAds,
-        DeletedAdsAvailable: state.AdReducer.DeletedAdsAvailable
+        DeletedAdsAvailable: state.AdReducer.DeletedAdsAvailable,
+        LoggedInUser: state.UserReducer.User
     }
 }
 export default connect(mapStateToProps)(Deleted);

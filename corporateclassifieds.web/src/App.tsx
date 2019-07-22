@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import ServerError from "./ErrorPages/ServerError";
 import Inbox from './Inbox/Inbox';
 import InfinityGIF from './Layout/Infinity.gif';
+import Profile from './Profile/Profile';
 
 class App extends React.Component<any, any> {
 
@@ -41,7 +42,7 @@ class App extends React.Component<any, any> {
               <Route path="/Classifieds" component={Classifieds} />
               <Route path="/MyClassifieds" component={MyClassifieds} />
               <Route path="/Admin" component={Admin} />
-              <Route path="/Profile" component={Admin} />
+              <Route path="/Profile" component={Profile} />
               <Route path="/Inbox" component={Inbox} />
 
               <Redirect to="/Classifieds/SaleRent" />

@@ -8,11 +8,15 @@ import Categories from './Categories/Categories';
 import ReportedAds from "./ReportedAds/ReportedAds";
 import "./Admin.sass";
 import Users from './Users/Users';
+import { fetchReportedAdByID } from '../Actions/AdActions';
 
 
 initializeIcons();
-class MyClassifieds extends Component<any, any>
+class Admin extends Component<any, any>
 {
+    // componentDidMount(){
+    //     this.props.dispatch(fetchReportedAdByID(0));
+    // }
     render() {
         return (
 
@@ -56,7 +60,7 @@ function mapStateToProps(state: any) {
         user: state.user
     }
 }
-export default connect(mapStateToProps)(MyClassifieds);
+export default connect(mapStateToProps)(Admin);
 
 
 

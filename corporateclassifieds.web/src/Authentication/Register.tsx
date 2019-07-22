@@ -19,9 +19,12 @@ class Register extends Component<any, any> {
         super(props);
         this.state = {
             UserName: '',
-            password: '', User: { name: "", email: "", phone: "", location: "", Picture: [] }
+            password: '', User: { name: "", email: "", phone: "", location: "", Picture: [] }, Cookie: localStorage.getItem("UserToken")
         }
-        this.props.dispatch(UserSignUpBegin());
+        console.log(this.state.Cookie);
+        debugger;
+        var Token = JSON.parse(this.state.Cookie);
+        Token == null ? this.props.dispatch(UserSignUpBegin()) : !Token.LoggedIn && this.props.dispatch(UserSignUpBegin());
     }
     handlePress(e: any) {
         if (e.keyCode == 13) {
@@ -144,8 +147,8 @@ class Register extends Component<any, any> {
 
                                     {this.props.UserExists && <Card.Text className="UserExists">UserName already Exists</Card.Text>}
 
-                                    <TextField label="User Name" name="UserName" value={this.state.UserName} placeholder="enter your username" 
-                                    onChange={(event, newValue) => this.setState({ UserName: newValue })} onBlur={()=>this.props.dispatch(CheckUserName(this.state.UserName))}/>
+                                    <TextField label="User Name" name="UserName" value={this.state.UserName} placeholder="enter your username"
+                                        onChange={(event, newValue) => this.setState({ UserName: newValue })} onBlur={() => this.props.dispatch(CheckUserName(this.state.UserName))} />
 
                                     <br />
 
@@ -153,7 +156,7 @@ class Register extends Component<any, any> {
                                         onChange={(event, newValue) => {
                                             this.setState({ password: newValue })
                                         }}
-                                         />
+                                    />
 
                                     <br />
 

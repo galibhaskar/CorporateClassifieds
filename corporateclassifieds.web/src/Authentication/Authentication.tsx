@@ -16,9 +16,12 @@ class Authentication extends React.Component<any, any> {
     super(props);
     this.state = {
       Username: '',
-      Password: ''
+      Password: '', Cookie: localStorage.getItem("UserToken")
     }
-    this.props.dispatch(ValidateUserBegin());
+    var Token = JSON.parse(this.state.Cookie);
+    console.log("token", Token);
+    debugger;
+    Token != null ? !Token.LoggedIn && this.props.dispatch(ValidateUserBegin()) : this.props.dispatch(ValidateUserBegin());
   }
   handleSignUp() {
     this.props.dispatch(UserSignUpBegin());

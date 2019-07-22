@@ -33,9 +33,9 @@ export const FETCH_REPORTED_ADS_BEGIN = 'FETCH_REPORTED_ADS_BEGIN';
 export const FETCH_REPORTED_ADS_SUCCESS = 'FETCH_REPORTED_ADS_SUCCESS';
 export const FETCH_REPORTED_ADS_ERROR = 'FETCH_REPORTED_ADS_ERROR';
 export const CHANGE_VIEW = 'CHANGE_VIEW';
-export const DELETE_AD_BEGIN='DELETE_AD_BEGIN';
-export const DELETE_AD_SUCCESS='DELETE_AD_SUCCESS';
-export const DELETE_AD_ERROR='DELETE_AD_ERROR';
+export const DELETE_AD_BEGIN = 'DELETE_AD_BEGIN';
+export const DELETE_AD_SUCCESS = 'DELETE_AD_SUCCESS';
+export const DELETE_AD_ERROR = 'DELETE_AD_ERROR';
 export const GET_FILTER_LIST = 'GET_FILTER_LIST';
 
 
@@ -161,17 +161,17 @@ export const fetchDeletedAdsError = (error: any) => ({
   payload: { error }
 })
 
-export const DeleteAdBegin=()=>({
-  type:DELETE_AD_BEGIN
+export const DeleteAdBegin = () => ({
+  type: DELETE_AD_BEGIN
 })
 
-export const DeleteAdSuccess=()=>({
-  type:DELETE_AD_SUCCESS
+export const DeleteAdSuccess = () => ({
+  type: DELETE_AD_SUCCESS
 })
 
-export const DeleteAdError=(error:any)=>({
-  type:DELETE_AD_ERROR,
-  payload:{error}
+export const DeleteAdError = (error: any) => ({
+  type: DELETE_AD_ERROR,
+  payload: { error }
 })
 
 export const fetchReportedAdsBegin = () => ({
@@ -228,14 +228,11 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
     else if (StatusCode == "Expired") {
       dispatch(fetchExpiredAdsBegin());
     }
-    else if (StatusCode == "Reported") {
-      dispatch(fetchReportedAdsBegin());
-    }
     else {
       dispatch(fetchDeletedAdsBegin());
     }
     try {
-      
+
       var length = 10
       const url = "https://localhost:44378/api/Ads/GetAdsByUserID/" + userID + "/" + StatusCode + "/" + start + "/" + (start + length);
       const response = await fetch(url);
@@ -249,9 +246,6 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
       }
       else if (StatusCode == "Expired") {
         dispatch(fetchExpiredAdsSuccess(json));
-      }
-      else if (StatusCode == "Reported") {
-        dispatch(fetchReportedAdsSuccess(json));
       }
       else {
         dispatch(fetchDeletedAdsSuccess(json));
@@ -267,9 +261,6 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
       else if (StatusCode == "Expired") {
         dispatch(fetchExpiredAdsError(error));
       }
-      else if (StatusCode == "Reported") {
-        dispatch(fetchReportedAdsError(error));
-      }
       else {
         dispatch(fetchDeletedAdsError(error));
       }
@@ -277,14 +268,33 @@ export function fetchUserAds(userID: number, StatusCode: string, start: number) 
   }
 }
 
+export function fetchReportedAdByID(UserID: number) {
+  return async (dispatch: any) => {
+    dispatch(fetchReportedAdsBegin());
+    debugger;
+    try {
+      const url = "https://localhost:44378/api/Ads/GetReportedAds/" + UserID;
+      const response = await fetch(url);
+      const res = await handleErrors(response);
+      const json = await res.json();
+      dispatch(fetchReportedAdsSuccess(json));
+
+    }
+    catch (error) {
+      dispatch(fetchReportedAdsError(error));
+    }
+  }
+}
+
+
 export function fetchAdByID(AdID: number) {
   return async (dispatch: any) => {
     dispatch(fetchAdByIDBegin());
     debugger;
     try {
       const url = "https://localhost:44378/api/Ads/" + AdID;
-      const url1="https://localhost:44378/api/Ads/IncreaseView/"+AdID;
-      const response1=await fetch(url1);
+      const url1 = "https://localhost:44378/api/Ads/IncreaseView/" + AdID;
+      const response1 = await fetch(url1);
       const response = await fetch(url);
       const res = await handleErrors(response);
       const json = await res.json();
@@ -316,20 +326,20 @@ export function postAd(AdDetails: any) {
   }
 }
 
-export function DeleteAd(AdID:number,userID:number){
-  return async (dispatch:any)=>{
-    try{
+export function DeleteAd(AdID: number, userID: number) {
+  return async (dispatch: any) => {
+    try {
       debugger;
       dispatch(DeleteAdBegin());
-      const url="https://localhost:44378/api/Ads/DeleteAdByID/"+AdID+"/"+userID;
-      const response=await fetch(url,{
-        method:'delete'
+      const url = "https://localhost:44378/api/Ads/DeleteAdByID/" + AdID + "/" + userID;
+      const response = await fetch(url, {
+        method: 'delete'
       });
-      const res=await handleErrors(response);
+      const res = await handleErrors(response);
       dispatch(DeleteAdSuccess());
       dispatch(FetchReports());
     }
-    catch(error){
+    catch (error) {
       dispatch(DeleteAdError(error));
     }
   }
@@ -372,12 +382,18 @@ export function fetchAds(FilterList: object) {
       console.log(FilterList);
       const response = await fetch("https://localhost:44378/api/Ads/GetAllAds", {
         method: 'post',
-        headers: new Headers({'content-type': 'application/json'}),
+        headers: new Headers({ 'content-type': 'application/json' }),
         body: JSON.stringify(FilterList),
       });
-      console.log(response);
+      // console.log("response", response);
       const res = await handleErrors(response);
       const json = await res.json();
+      
+      // console.log(json);
+      // debugger;
+      // console.log(new Date().getTime().toString());
+      // console.log(localStorage.getItem("UserToken"));
+      // console.log(Cookie.Expiry-(new Date().getTime()));
       dispatch(fetchAdsSuccess(json));
     }
     catch (error) {
@@ -388,9 +404,9 @@ export function fetchAds(FilterList: object) {
 
 export const getFilterList = (FilterList: object) => ({
   type: GET_FILTER_LIST,
-  payload: {FilterList}
+  payload: { FilterList }
 })
-export function filterList(FilterList: object){
+export function filterList(FilterList: object) {
   return async (dispatch: any) => {
     dispatch(getFilterList(FilterList));
   }
